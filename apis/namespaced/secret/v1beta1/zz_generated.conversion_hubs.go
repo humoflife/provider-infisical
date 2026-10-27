@@ -11,3 +11,18 @@ func (tr *Secret) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *SecretFolder) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretImport) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretTag) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretValidationRuleDynamicSecrets) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretValidationRuleSecretRotations) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretValidationRuleStaticSecrets) Hub() {}

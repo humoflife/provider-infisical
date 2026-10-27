@@ -1,0 +1,53 @@
+apiVersion: identity.infisical.m.upbound.io/v1beta1
+kind: OidcAuth
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/oidcauth
+  labels:
+    testing.upbound.io/example-name: oidc-auth
+  name: oidc-auth
+  namespace: default
+spec:
+  forProvider:
+    boundAudiences:
+    - sample-audience
+    boundIssuer: <>
+    boundSubject: <>
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: machine-identity-1
+    oidcDiscoveryUrl: <>
+
+---
+
+apiVersion: identity.infisical.m.upbound.io/v1beta1
+kind: Identity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/oidcauth
+  labels:
+    testing.upbound.io/example-name: machine-identity-1
+  name: machine-identity-1
+  namespace: default
+spec:
+  forProvider:
+    name: machine-identity-1
+    orgId: <>
+    role: admin
+
+---
+
+apiVersion: identity.infisical.m.upbound.io/v1beta1
+kind: Identity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/oidcauth
+  labels:
+    testing.upbound.io/example-name: machine-identity-2
+  name: machine-identity-2
+  namespace: default
+spec:
+  forProvider:
+    name: machine-identity-2
+    orgId: <>
+    role: admin

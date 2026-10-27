@@ -1,0 +1,956 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.20.1
+  name: awselasticloadbalancers.certificatesync.infisical.m.upbound.io
+spec:
+  group: certificatesync.infisical.m.upbound.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - infisical
+    kind: AwsElasticLoadBalancer
+    listKind: AwsElasticLoadBalancerList
+    plural: awselasticloadbalancers
+    singular: awselasticloadbalancer
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: AwsElasticLoadBalancer is the Schema for the AwsElasticLoadBalancers
+          API. Create and manage AWS Elastic Load Balancer certificate syncs
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AwsElasticLoadBalancerSpec defines the desired state of AwsElasticLoadBalancer
+            properties:
+              forProvider:
+                properties:
+                  applicationId:
+                    description: |-
+                      (String) The ID of the Certificate Manager application to create the sync in.
+                      The ID of the Certificate Manager application to create the sync in.
+                    type: string
+                  applicationIdRef:
+                    description: Reference to a Application in certmanager to populate
+                      applicationId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      namespace:
+                        description: Namespace of the referenced object
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  applicationIdSelector:
+                    description: Selector for a Application in certmanager to populate
+                      applicationId.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      namespace:
+                        description: Namespace for the selector
+                        type: string
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  autoSyncEnabled:
+                    description: |-
+                      (Boolean) Whether certificates should be automatically synced to the destination when they are added or renewed.
+                      Whether certificates should be automatically synced to the destination when they are added or renewed.
+                    type: boolean
+                  certificateFilters:
+                    description: '(Attributes) Which of the application''s certificates
+                      this sync holds. A certificate must match every field that is
+                      set: setting both certificate_order_ids and profile_ids selects
+                      only the certificates in both. An empty block, or an empty certificate_order_ids,
+                      makes the sync hold no certificates. (see below for nested schema)'
+                    properties:
+                      certificateOrderIds:
+                        description: |-
+                          (Set of String) The certificate orders to sync, from the order_id attribute of infisical_cert_manager_certificate. A certificate and all of its renewals share one order, so the sync keeps holding the newest certificate of each order.
+                          The certificate orders to sync, from the `order_id` attribute of `infisical_cert_manager_certificate`. A certificate and all of its renewals share one order, so the sync keeps holding the newest certificate of each order.
+                        items:
+                          type: string
+                        type: array
+                        x-kubernetes-list-type: set
+                      metadata:
+                        description: (Attributes Set) Sync certificates carrying every
+                          one of these metadata pairs. (see below for nested schema)
+                        items:
+                          properties:
+                            key:
+                              description: |-
+                                (String) The metadata key the certificate must carry.
+                                The metadata key the certificate must carry.
+                              type: string
+                            value:
+                              description: |-
+                                (String) The value the key must have. Leave unset to match any value.
+                                The value the key must have. Leave unset to match any value.
+                              type: string
+                          type: object
+                        type: array
+                      profileIds:
+                        description: |-
+                          (Set of String) Sync certificates issued from any one of these certificate profiles.
+                          Sync certificates issued from any one of these certificate profiles.
+                        items:
+                          type: string
+                        type: array
+                        x-kubernetes-list-type: set
+                    type: object
+                  connectionId:
+                    description: |-
+                      (String) The ID of the aws Connection to use for syncing.
+                      The ID of the aws Connection to use for syncing.
+                    type: string
+                  connectionIdRef:
+                    description: Reference to a AppConnectionAws in appconnection
+                      to populate connectionId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      namespace:
+                        description: Namespace of the referenced object
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  connectionIdSelector:
+                    description: Selector for a AppConnectionAws in appconnection
+                      to populate connectionId.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      namespace:
+                        description: Namespace for the selector
+                        type: string
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  defaultCertificateOrderId:
+                    description: |-
+                      (String) The certificate order whose newest certificate is the default certificate on every listener, from the order_id attribute of infisical_cert_manager_certificate. The load balancer serves it when a client's SNI matches no other certificate. It must be one of the orders the sync holds. Leave unset to leave the listeners' default unmanaged; removing it later stops managing the default without changing it.
+                      The certificate order whose newest certificate is the default certificate on every listener, from the `order_id` attribute of `infisical_cert_manager_certificate`. The load balancer serves it when a client's SNI matches no other certificate. It must be one of the orders the sync holds. Leave unset to leave the listeners' default unmanaged; removing it later stops managing the default without changing it.
+                    type: string
+                  description:
+                    description: |-
+                      (String) An optional description for the AWS Elastic Load Balancer sync.
+                      An optional description for the AWS Elastic Load Balancer sync.
+                    type: string
+                  destinationConfig:
+                    description: (Attributes) The destination configuration for the
+                      certificate sync. (see below for nested schema)
+                    properties:
+                      awsRegion:
+                        description: |-
+                          east-1).
+                          The AWS region of the load balancer (e.g. us-east-1).
+                        type: string
+                      listeners:
+                        description: (Attributes List) The HTTPS or TLS listeners
+                          on the load balancer to attach synced certificates to. At
+                          least one listener is required. (see below for nested schema)
+                        items:
+                          properties:
+                            listenerArn:
+                              description: |-
+                                (String) The ARN of the listener.
+                                The ARN of the listener.
+                              type: string
+                            port:
+                              description: |-
+                                (Number) The port the listener serves on (e.g. 443).
+                                The port the listener serves on (e.g. 443).
+                              type: number
+                            protocol:
+                              description: |-
+                                (String) The protocol of the listener (e.g. HTTPS or TLS).
+                                The protocol of the listener (e.g. HTTPS or TLS).
+                              type: string
+                          type: object
+                        type: array
+                      loadBalancerArn:
+                        description: |-
+                          (String) The ARN of the load balancer to sync certificates to.
+                          The ARN of the load balancer to sync certificates to.
+                        type: string
+                    type: object
+                  name:
+                    description: |-
+                      (String) The name of the AWS Elastic Load Balancer sync to create.
+                      The name of the AWS Elastic Load Balancer sync to create.
+                    type: string
+                  syncOptions:
+                    description: (Attributes) Parameters to modify how certificates
+                      are synced. (see below for nested schema)
+                    properties:
+                      canRemoveCertificates:
+                        description: |-
+                          (Boolean) Whether Infisical should remove certificates from the load balancer when their certificates leave this sync, for example when certificate_filters stops matching them. Destroying the sync leaves them in place. Defaults to false.
+                          Whether Infisical should remove certificates from the load balancer when their certificates leave this sync, for example when `certificate_filters` stops matching them. Destroying the sync leaves them in place. Defaults to false.
+                        type: boolean
+                      certificateNameSchema:
+                        description: |-
+                          256 characters). When unset, the sync holds only one certificate.
+                          The naming scheme for certificates imported into ACM for the listeners. When set, it must include the {{certificateId}} placeholder; {{shortCertificateId}} is not supported for this destination. Names may contain letters, digits, spaces, hyphens and underscores (1-256 characters). When unset, the sync holds only one certificate.
+                        type: string
+                      includeRootCa:
+                        description: |-
+                          (Boolean) Whether to include the root CA certificate in the synced certificate chain. Defaults to false.
+                          Whether to include the root CA certificate in the synced certificate chain. Defaults to false.
+                        type: boolean
+                      preserveArn:
+                        description: |-
+                          (Boolean) Whether to preserve the certificate ARN when a certificate is renewed, reimporting into the existing certificate instead of creating a new one. Defaults to true.
+                          Whether to preserve the certificate ARN when a certificate is renewed, reimporting into the existing certificate instead of creating a new one. Defaults to true.
+                        type: boolean
+                    type: object
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  applicationId:
+                    description: |-
+                      (String) The ID of the Certificate Manager application to create the sync in.
+                      The ID of the Certificate Manager application to create the sync in.
+                    type: string
+                  applicationIdRef:
+                    description: Reference to a Application in certmanager to populate
+                      applicationId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      namespace:
+                        description: Namespace of the referenced object
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  applicationIdSelector:
+                    description: Selector for a Application in certmanager to populate
+                      applicationId.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      namespace:
+                        description: Namespace for the selector
+                        type: string
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  autoSyncEnabled:
+                    description: |-
+                      (Boolean) Whether certificates should be automatically synced to the destination when they are added or renewed.
+                      Whether certificates should be automatically synced to the destination when they are added or renewed.
+                    type: boolean
+                  certificateFilters:
+                    description: '(Attributes) Which of the application''s certificates
+                      this sync holds. A certificate must match every field that is
+                      set: setting both certificate_order_ids and profile_ids selects
+                      only the certificates in both. An empty block, or an empty certificate_order_ids,
+                      makes the sync hold no certificates. (see below for nested schema)'
+                    properties:
+                      certificateOrderIds:
+                        description: |-
+                          (Set of String) The certificate orders to sync, from the order_id attribute of infisical_cert_manager_certificate. A certificate and all of its renewals share one order, so the sync keeps holding the newest certificate of each order.
+                          The certificate orders to sync, from the `order_id` attribute of `infisical_cert_manager_certificate`. A certificate and all of its renewals share one order, so the sync keeps holding the newest certificate of each order.
+                        items:
+                          type: string
+                        type: array
+                        x-kubernetes-list-type: set
+                      metadata:
+                        description: (Attributes Set) Sync certificates carrying every
+                          one of these metadata pairs. (see below for nested schema)
+                        items:
+                          properties:
+                            key:
+                              description: |-
+                                (String) The metadata key the certificate must carry.
+                                The metadata key the certificate must carry.
+                              type: string
+                            value:
+                              description: |-
+                                (String) The value the key must have. Leave unset to match any value.
+                                The value the key must have. Leave unset to match any value.
+                              type: string
+                          type: object
+                        type: array
+                      profileIds:
+                        description: |-
+                          (Set of String) Sync certificates issued from any one of these certificate profiles.
+                          Sync certificates issued from any one of these certificate profiles.
+                        items:
+                          type: string
+                        type: array
+                        x-kubernetes-list-type: set
+                    type: object
+                  connectionId:
+                    description: |-
+                      (String) The ID of the aws Connection to use for syncing.
+                      The ID of the aws Connection to use for syncing.
+                    type: string
+                  connectionIdRef:
+                    description: Reference to a AppConnectionAws in appconnection
+                      to populate connectionId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      namespace:
+                        description: Namespace of the referenced object
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  connectionIdSelector:
+                    description: Selector for a AppConnectionAws in appconnection
+                      to populate connectionId.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      namespace:
+                        description: Namespace for the selector
+                        type: string
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  defaultCertificateOrderId:
+                    description: |-
+                      (String) The certificate order whose newest certificate is the default certificate on every listener, from the order_id attribute of infisical_cert_manager_certificate. The load balancer serves it when a client's SNI matches no other certificate. It must be one of the orders the sync holds. Leave unset to leave the listeners' default unmanaged; removing it later stops managing the default without changing it.
+                      The certificate order whose newest certificate is the default certificate on every listener, from the `order_id` attribute of `infisical_cert_manager_certificate`. The load balancer serves it when a client's SNI matches no other certificate. It must be one of the orders the sync holds. Leave unset to leave the listeners' default unmanaged; removing it later stops managing the default without changing it.
+                    type: string
+                  description:
+                    description: |-
+                      (String) An optional description for the AWS Elastic Load Balancer sync.
+                      An optional description for the AWS Elastic Load Balancer sync.
+                    type: string
+                  destinationConfig:
+                    description: (Attributes) The destination configuration for the
+                      certificate sync. (see below for nested schema)
+                    properties:
+                      awsRegion:
+                        description: |-
+                          east-1).
+                          The AWS region of the load balancer (e.g. us-east-1).
+                        type: string
+                      listeners:
+                        description: (Attributes List) The HTTPS or TLS listeners
+                          on the load balancer to attach synced certificates to. At
+                          least one listener is required. (see below for nested schema)
+                        items:
+                          properties:
+                            listenerArn:
+                              description: |-
+                                (String) The ARN of the listener.
+                                The ARN of the listener.
+                              type: string
+                            port:
+                              description: |-
+                                (Number) The port the listener serves on (e.g. 443).
+                                The port the listener serves on (e.g. 443).
+                              type: number
+                            protocol:
+                              description: |-
+                                (String) The protocol of the listener (e.g. HTTPS or TLS).
+                                The protocol of the listener (e.g. HTTPS or TLS).
+                              type: string
+                          type: object
+                        type: array
+                      loadBalancerArn:
+                        description: |-
+                          (String) The ARN of the load balancer to sync certificates to.
+                          The ARN of the load balancer to sync certificates to.
+                        type: string
+                    type: object
+                  name:
+                    description: |-
+                      (String) The name of the AWS Elastic Load Balancer sync to create.
+                      The name of the AWS Elastic Load Balancer sync to create.
+                    type: string
+                  syncOptions:
+                    description: (Attributes) Parameters to modify how certificates
+                      are synced. (see below for nested schema)
+                    properties:
+                      canRemoveCertificates:
+                        description: |-
+                          (Boolean) Whether Infisical should remove certificates from the load balancer when their certificates leave this sync, for example when certificate_filters stops matching them. Destroying the sync leaves them in place. Defaults to false.
+                          Whether Infisical should remove certificates from the load balancer when their certificates leave this sync, for example when `certificate_filters` stops matching them. Destroying the sync leaves them in place. Defaults to false.
+                        type: boolean
+                      certificateNameSchema:
+                        description: |-
+                          256 characters). When unset, the sync holds only one certificate.
+                          The naming scheme for certificates imported into ACM for the listeners. When set, it must include the {{certificateId}} placeholder; {{shortCertificateId}} is not supported for this destination. Names may contain letters, digits, spaces, hyphens and underscores (1-256 characters). When unset, the sync holds only one certificate.
+                        type: string
+                      includeRootCa:
+                        description: |-
+                          (Boolean) Whether to include the root CA certificate in the synced certificate chain. Defaults to false.
+                          Whether to include the root CA certificate in the synced certificate chain. Defaults to false.
+                        type: boolean
+                      preserveArn:
+                        description: |-
+                          (Boolean) Whether to preserve the certificate ARN when a certificate is renewed, reimporting into the existing certificate instead of creating a new one. Defaults to true.
+                          Whether to preserve the certificate ARN when a certificate is renewed, reimporting into the existing certificate instead of creating a new one. Defaults to true.
+                        type: boolean
+                    type: object
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  kind: ClusterProviderConfig
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  kind:
+                    description: Kind of the referenced object.
+                    type: string
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - kind
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                required:
+                - name
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.destinationConfig is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.destinationConfig)
+                || (has(self.initProvider) && has(self.initProvider.destinationConfig))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.syncOptions is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.syncOptions)
+                || (has(self.initProvider) && has(self.initProvider.syncOptions))'
+          status:
+            description: AwsElasticLoadBalancerStatus defines the observed state of
+              AwsElasticLoadBalancer.
+            properties:
+              atProvider:
+                properties:
+                  applicationId:
+                    description: |-
+                      (String) The ID of the Certificate Manager application to create the sync in.
+                      The ID of the Certificate Manager application to create the sync in.
+                    type: string
+                  autoSyncEnabled:
+                    description: |-
+                      (Boolean) Whether certificates should be automatically synced to the destination when they are added or renewed.
+                      Whether certificates should be automatically synced to the destination when they are added or renewed.
+                    type: boolean
+                  certificateFilters:
+                    description: '(Attributes) Which of the application''s certificates
+                      this sync holds. A certificate must match every field that is
+                      set: setting both certificate_order_ids and profile_ids selects
+                      only the certificates in both. An empty block, or an empty certificate_order_ids,
+                      makes the sync hold no certificates. (see below for nested schema)'
+                    properties:
+                      certificateOrderIds:
+                        description: |-
+                          (Set of String) The certificate orders to sync, from the order_id attribute of infisical_cert_manager_certificate. A certificate and all of its renewals share one order, so the sync keeps holding the newest certificate of each order.
+                          The certificate orders to sync, from the `order_id` attribute of `infisical_cert_manager_certificate`. A certificate and all of its renewals share one order, so the sync keeps holding the newest certificate of each order.
+                        items:
+                          type: string
+                        type: array
+                        x-kubernetes-list-type: set
+                      metadata:
+                        description: (Attributes Set) Sync certificates carrying every
+                          one of these metadata pairs. (see below for nested schema)
+                        items:
+                          properties:
+                            key:
+                              description: |-
+                                (String) The metadata key the certificate must carry.
+                                The metadata key the certificate must carry.
+                              type: string
+                            value:
+                              description: |-
+                                (String) The value the key must have. Leave unset to match any value.
+                                The value the key must have. Leave unset to match any value.
+                              type: string
+                          type: object
+                        type: array
+                      profileIds:
+                        description: |-
+                          (Set of String) Sync certificates issued from any one of these certificate profiles.
+                          Sync certificates issued from any one of these certificate profiles.
+                        items:
+                          type: string
+                        type: array
+                        x-kubernetes-list-type: set
+                    type: object
+                  connectionId:
+                    description: |-
+                      (String) The ID of the aws Connection to use for syncing.
+                      The ID of the aws Connection to use for syncing.
+                    type: string
+                  defaultCertificateOrderId:
+                    description: |-
+                      (String) The certificate order whose newest certificate is the default certificate on every listener, from the order_id attribute of infisical_cert_manager_certificate. The load balancer serves it when a client's SNI matches no other certificate. It must be one of the orders the sync holds. Leave unset to leave the listeners' default unmanaged; removing it later stops managing the default without changing it.
+                      The certificate order whose newest certificate is the default certificate on every listener, from the `order_id` attribute of `infisical_cert_manager_certificate`. The load balancer serves it when a client's SNI matches no other certificate. It must be one of the orders the sync holds. Leave unset to leave the listeners' default unmanaged; removing it later stops managing the default without changing it.
+                    type: string
+                  description:
+                    description: |-
+                      (String) An optional description for the AWS Elastic Load Balancer sync.
+                      An optional description for the AWS Elastic Load Balancer sync.
+                    type: string
+                  destinationConfig:
+                    description: (Attributes) The destination configuration for the
+                      certificate sync. (see below for nested schema)
+                    properties:
+                      awsRegion:
+                        description: |-
+                          east-1).
+                          The AWS region of the load balancer (e.g. us-east-1).
+                        type: string
+                      listeners:
+                        description: (Attributes List) The HTTPS or TLS listeners
+                          on the load balancer to attach synced certificates to. At
+                          least one listener is required. (see below for nested schema)
+                        items:
+                          properties:
+                            listenerArn:
+                              description: |-
+                                (String) The ARN of the listener.
+                                The ARN of the listener.
+                              type: string
+                            port:
+                              description: |-
+                                (Number) The port the listener serves on (e.g. 443).
+                                The port the listener serves on (e.g. 443).
+                              type: number
+                            protocol:
+                              description: |-
+                                (String) The protocol of the listener (e.g. HTTPS or TLS).
+                                The protocol of the listener (e.g. HTTPS or TLS).
+                              type: string
+                          type: object
+                        type: array
+                      loadBalancerArn:
+                        description: |-
+                          (String) The ARN of the load balancer to sync certificates to.
+                          The ARN of the load balancer to sync certificates to.
+                        type: string
+                    type: object
+                  id:
+                    description: (String) The ID of the AWS Elastic Load Balancer
+                      certificate sync
+                    type: string
+                  name:
+                    description: |-
+                      (String) The name of the AWS Elastic Load Balancer sync to create.
+                      The name of the AWS Elastic Load Balancer sync to create.
+                    type: string
+                  syncOptions:
+                    description: (Attributes) Parameters to modify how certificates
+                      are synced. (see below for nested schema)
+                    properties:
+                      canRemoveCertificates:
+                        description: |-
+                          (Boolean) Whether Infisical should remove certificates from the load balancer when their certificates leave this sync, for example when certificate_filters stops matching them. Destroying the sync leaves them in place. Defaults to false.
+                          Whether Infisical should remove certificates from the load balancer when their certificates leave this sync, for example when `certificate_filters` stops matching them. Destroying the sync leaves them in place. Defaults to false.
+                        type: boolean
+                      certificateNameSchema:
+                        description: |-
+                          256 characters). When unset, the sync holds only one certificate.
+                          The naming scheme for certificates imported into ACM for the listeners. When set, it must include the {{certificateId}} placeholder; {{shortCertificateId}} is not supported for this destination. Names may contain letters, digits, spaces, hyphens and underscores (1-256 characters). When unset, the sync holds only one certificate.
+                        type: string
+                      includeRootCa:
+                        description: |-
+                          (Boolean) Whether to include the root CA certificate in the synced certificate chain. Defaults to false.
+                          Whether to include the root CA certificate in the synced certificate chain. Defaults to false.
+                        type: boolean
+                      preserveArn:
+                        description: |-
+                          (Boolean) Whether to preserve the certificate ARN when a certificate is renewed, reimporting into the existing certificate instead of creating a new one. Defaults to true.
+                          Whether to preserve the certificate ARN when a certificate is renewed, reimporting into the existing certificate instead of creating a new one. Defaults to true.
+                        type: boolean
+                    type: object
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -1,0 +1,27 @@
+apiVersion: certificatesync.infisical.m.upbound.io/v1beta1
+kind: CloudflareCustomCertificate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certificatesync/v1beta1/cloudflarecustomcertificate
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: default
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    certificateFilters:
+      certificateOrderIds:
+      - ${infisical_cert_manager_certificate.example.order_id}
+    connectionIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    description: Demo of Cloudflare Custom SSL Certificate sync
+    destinationConfig:
+      zoneId: 023e105f4ecef8ad9ca31a8372d0c353
+    name: cloudflare-certificate-sync-demo
+    syncOptions:
+      canRemoveCertificates: true
+      certificateNameSchema: infisical-{{certificateId}}

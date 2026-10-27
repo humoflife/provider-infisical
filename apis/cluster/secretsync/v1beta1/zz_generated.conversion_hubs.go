@@ -7,4 +7,55 @@
 package v1beta1
 
 // Hub marks this type as a conversion hub.
+func (tr *SecretSyncAwsParameterStore) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncAwsSecretsManager) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncAzureAppConfiguration) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncAzureDevops) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncAzureKeyVault) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncBitbucket) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncCircleci) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncCloudflarePages) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncCloudflareWorkers) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncDatabricks) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncFlyio) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncGcpSecretManager) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *SecretSyncGithub) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncGitlab) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncOnePassword) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncRender) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncSpacelift) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretSyncSupabase) Hub() {}

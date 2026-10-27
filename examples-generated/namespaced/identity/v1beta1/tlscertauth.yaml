@@ -1,0 +1,41 @@
+apiVersion: identity.infisical.m.upbound.io/v1beta1
+kind: TlsCertAuth
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/tlscertauth
+  labels:
+    testing.upbound.io/example-name: tls-cert-auth
+  name: tls-cert-auth
+  namespace: default
+spec:
+  forProvider:
+    accessTokenMaxTtl: 2592000
+    accessTokenTrustedIps:
+    - ipAddress: 0.0.0.0/0
+    accessTokenTtl: 2592000
+    allowedCommonNames:
+    - my-service.example.com
+    allowedSubjectAltNames:
+    - URI:spiffe://example.org/my-service
+    caCertificate: ${file("${path.module}/ca.pem")}
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: machine-identity-1
+    verifyClientCertificateChain: false
+
+---
+
+apiVersion: identity.infisical.m.upbound.io/v1beta1
+kind: Identity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/tlscertauth
+  labels:
+    testing.upbound.io/example-name: machine-identity-1
+  name: machine-identity-1
+  namespace: default
+spec:
+  forProvider:
+    name: machine-identity-1
+    orgId: <your-org-id>
+    role: admin

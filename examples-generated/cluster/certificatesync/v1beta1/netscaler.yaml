@@ -1,0 +1,28 @@
+apiVersion: certificatesync.infisical.upbound.io/v1beta1
+kind: Netscaler
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certificatesync/v1beta1/netscaler
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    certificateFilters:
+      certificateOrderIds:
+      - ${infisical_cert_manager_certificate.example.order_id}
+    connectionIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    description: Demo of NetScaler certificate sync
+    destinationConfig:
+      vserverName: <ssl-vserver-name>
+    name: netscaler-certificate-sync-demo
+    syncOptions:
+      canRemoveCertificates: true
+      certificateNameSchema: Infisical-{{shortCertificateId}}
+      includeRootCa: false
+      preserveItemOnRenewal: true

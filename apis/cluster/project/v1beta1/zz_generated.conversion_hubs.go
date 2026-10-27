@@ -22,7 +22,13 @@ func (tr *ProjectGroup) Hub() {}
 func (tr *ProjectIdentity) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *ProjectIdentitySpecificPrivilege) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *ProjectRole) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *ProjectScopedIdentity) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *ProjectTemplate) Hub() {}
@@ -32,3 +38,6 @@ func (tr *ProjectUser) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *SecretApprovalPolicy) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Webhook) Hub() {}

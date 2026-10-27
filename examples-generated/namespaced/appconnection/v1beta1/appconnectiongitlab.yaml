@@ -1,0 +1,20 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionGitlab
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectiongitlab
+  labels:
+    testing.upbound.io/example-name: gitlab_connection
+  name: gitlab-connection
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      accessTokenSecretRef:
+        key: example-key
+        name: example-secret
+      accessTokenType: project
+      instanceUrl: https://gitlab.com
+    description: GitLab connection for CI/CD variables sync
+    method: access-token
+    name: gitlab-connection

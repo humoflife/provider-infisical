@@ -74,4 +74,22 @@ func Configure(p *config.Provider) {
 			TerraformName: "infisical_project",
 		}
 	})
+
+	p.AddResourceConfigurator("infisical_project_identity_specific_privilege", func(r *config.Resource) {
+		r.Kind = "ProjectIdentitySpecificPrivilege"
+		r.ShortGroup = "project"
+		r.References["identity_id"] = config.Reference{TerraformName: "infisical_identity"}
+	})
+
+	p.AddResourceConfigurator("infisical_project_scoped_identity", func(r *config.Resource) {
+		r.Kind = "ProjectScopedIdentity"
+		r.ShortGroup = "project"
+		r.References["project_id"] = config.Reference{TerraformName: "infisical_project"}
+	})
+
+	p.AddResourceConfigurator("infisical_webhook", func(r *config.Resource) {
+		r.Kind = "Webhook"
+		r.ShortGroup = "project"
+		r.References["project_id"] = config.Reference{TerraformName: "infisical_project"}
+	})
 }

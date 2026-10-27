@@ -20,6 +20,47 @@ spec:
 ---
 
 apiVersion: identity.infisical.upbound.io/v1beta1
+kind: AwsAuth
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/identity
+  labels:
+    testing.upbound.io/example-name: aws-auth
+  name: aws-auth
+spec:
+  forProvider:
+    accessTokenMaxTtl: ${2592000 * 2}
+    accessTokenNumUsesLimit: 3
+    accessTokenTtl: 2592000
+    allowedAccountIds:
+    - "123456789012"
+    - "123456789013"
+    allowedPrincipalArns:
+    - arn:aws:iam::123456789012:user/MyUserName
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: aws-auth
+
+---
+
+apiVersion: identity.infisical.upbound.io/v1beta1
+kind: AzureAuth
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/identity
+  labels:
+    testing.upbound.io/example-name: azure-auth
+  name: azure-auth
+spec:
+  forProvider:
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: azure-auth
+    tenantId: TENANT_ID
+
+---
+
+apiVersion: identity.infisical.upbound.io/v1beta1
 kind: KubernetesAuth
 metadata:
   annotations:
@@ -37,6 +78,39 @@ spec:
         testing.upbound.io/example-name: k8-auth
     kubernetesHost: http://example.com
     tokenReviewerJwt: ey<example>
+
+---
+
+apiVersion: identity.infisical.upbound.io/v1beta1
+kind: TokenAuth
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/identity
+  labels:
+    testing.upbound.io/example-name: token-auth
+  name: token-auth
+spec:
+  forProvider:
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: token-auth
+
+---
+
+apiVersion: identity.infisical.upbound.io/v1beta1
+kind: TokenAuthToken
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/identity
+  labels:
+    testing.upbound.io/example-name: token-auth-token
+  name: token-auth-token
+spec:
+  forProvider:
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: token-auth
+    name: token-auth-token
 
 ---
 

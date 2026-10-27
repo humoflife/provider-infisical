@@ -13,8 +13,15 @@ import (
 	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 
 	"github.com/infisical/provider-infisical/config/appconnection"
+	"github.com/infisical/provider-infisical/config/certificatesync"
+	"github.com/infisical/provider-infisical/config/certmanager"
+	"github.com/infisical/provider-infisical/config/dynamicsecret"
+	"github.com/infisical/provider-infisical/config/gateway"
 	"github.com/infisical/provider-infisical/config/group"
 	"github.com/infisical/provider-infisical/config/identity"
+	"github.com/infisical/provider-infisical/config/integration"
+	"github.com/infisical/provider-infisical/config/kms"
+	"github.com/infisical/provider-infisical/config/organization"
 	"github.com/infisical/provider-infisical/config/project"
 	"github.com/infisical/provider-infisical/config/secret"
 	"github.com/infisical/provider-infisical/config/secretrotation"
@@ -74,6 +81,13 @@ func newProvider(rootGroup string, opts ...ujconfig.ProviderOption) *ujconfig.Pr
 		secret.Configure,
 		secretrotation.Configure,
 		appconnection.Configure,
+		certificatesync.Configure,
+		certmanager.Configure,
+		dynamicsecret.Configure,
+		gateway.Configure,
+		integration.Configure,
+		kms.Configure,
+		organization.Configure,
 	} {
 		configure(pc)
 	}

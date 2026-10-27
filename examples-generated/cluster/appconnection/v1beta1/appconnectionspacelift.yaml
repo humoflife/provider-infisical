@@ -1,0 +1,20 @@
+apiVersion: appconnection.infisical.upbound.io/v1beta1
+kind: AppConnectionSpacelift
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionspacelift
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    credentials:
+      apiKeyId: <your-spacelift-api-key-id>
+      apiKeySecretSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      apiUrl: https://<your-account>.app.spacelift.io
+    description: I am a test app connection
+    method: api-key-secret
+    name: spacelift-connection

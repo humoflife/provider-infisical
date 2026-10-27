@@ -13,19 +13,19 @@ import (
 	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
-type AccessTokenTrustedIpsInitParameters struct {
+type KubernetesAuthAccessTokenTrustedIpsInitParameters struct {
 
 	// (String)
 	IPAddress *string `json:"ipAddress,omitempty" tf:"ip_address,omitempty"`
 }
 
-type AccessTokenTrustedIpsObservation struct {
+type KubernetesAuthAccessTokenTrustedIpsObservation struct {
 
 	// (String)
 	IPAddress *string `json:"ipAddress,omitempty" tf:"ip_address,omitempty"`
 }
 
-type AccessTokenTrustedIpsParameters struct {
+type KubernetesAuthAccessTokenTrustedIpsParameters struct {
 
 	// (String)
 	// +kubebuilder:validation:Optional
@@ -47,7 +47,7 @@ type KubernetesAuthInitParameters struct {
 	AccessTokenTTL *float64 `json:"accessTokenTtl,omitempty" tf:"access_token_ttl,omitempty"`
 
 	// (Attributes List) A list of IPs or CIDR ranges that access tokens can be used from. You can use 0.0.0.0/0, to allow usage from any network address.. (see below for nested schema)
-	AccessTokenTrustedIps []AccessTokenTrustedIpsInitParameters `json:"accessTokenTrustedIps,omitempty" tf:"access_token_trusted_ips,omitempty"`
+	AccessTokenTrustedIps []KubernetesAuthAccessTokenTrustedIpsInitParameters `json:"accessTokenTrustedIps,omitempty" tf:"access_token_trusted_ips,omitempty"`
 
 	// (String) An optional audience claim that the service account JWT token must have to authenticate with Infisical.
 	// An optional audience claim that the service account JWT token must have to authenticate with Infisical.
@@ -114,7 +114,7 @@ type KubernetesAuthObservation struct {
 	AccessTokenTTL *float64 `json:"accessTokenTtl,omitempty" tf:"access_token_ttl,omitempty"`
 
 	// (Attributes List) A list of IPs or CIDR ranges that access tokens can be used from. You can use 0.0.0.0/0, to allow usage from any network address.. (see below for nested schema)
-	AccessTokenTrustedIps []AccessTokenTrustedIpsObservation `json:"accessTokenTrustedIps,omitempty" tf:"access_token_trusted_ips,omitempty"`
+	AccessTokenTrustedIps []KubernetesAuthAccessTokenTrustedIpsObservation `json:"accessTokenTrustedIps,omitempty" tf:"access_token_trusted_ips,omitempty"`
 
 	// (String) An optional audience claim that the service account JWT token must have to authenticate with Infisical.
 	// An optional audience claim that the service account JWT token must have to authenticate with Infisical.
@@ -183,7 +183,7 @@ type KubernetesAuthParameters struct {
 
 	// (Attributes List) A list of IPs or CIDR ranges that access tokens can be used from. You can use 0.0.0.0/0, to allow usage from any network address.. (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	AccessTokenTrustedIps []AccessTokenTrustedIpsParameters `json:"accessTokenTrustedIps,omitempty" tf:"access_token_trusted_ips,omitempty"`
+	AccessTokenTrustedIps []KubernetesAuthAccessTokenTrustedIpsParameters `json:"accessTokenTrustedIps,omitempty" tf:"access_token_trusted_ips,omitempty"`
 
 	// (String) An optional audience claim that the service account JWT token must have to authenticate with Infisical.
 	// An optional audience claim that the service account JWT token must have to authenticate with Infisical.

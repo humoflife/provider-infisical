@@ -1,0 +1,55 @@
+apiVersion: identity.infisical.upbound.io/v1beta1
+kind: KubernetesAuthTemplate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/kubernetesauthtemplate
+  labels:
+    testing.upbound.io/example-name: api
+  name: api
+spec:
+  forProvider:
+    allowedAudience: infisical
+    kubernetesCaCertificate: ${file("<path-to-kubernetes-ca-certificate>")}
+    kubernetesHost: https://<your-kubernetes-host>:6443
+    name: prod-cluster
+    tokenReviewerJwtSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+
+---
+
+apiVersion: identity.infisical.upbound.io/v1beta1
+kind: Identity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/kubernetesauthtemplate
+  labels:
+    testing.upbound.io/example-name: machine-identity-demo
+  name: machine-identity-demo
+spec:
+  forProvider:
+    name: machine-identity-demo
+    orgId: <your-org-id>
+    role: admin
+
+---
+
+apiVersion: identity.infisical.upbound.io/v1beta1
+kind: KubernetesAuth
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/kubernetesauthtemplate
+  labels:
+    testing.upbound.io/example-name: kubernetes-auth-demo
+  name: kubernetes-auth-demo
+spec:
+  forProvider:
+    allowedNamespaces:
+    - infisical-ns
+    allowedServiceAccountNames:
+    - infisical-sa
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: machine-identity-demo
+    templateId: ${infisical_identity_kubernetes_auth_template.api.id}

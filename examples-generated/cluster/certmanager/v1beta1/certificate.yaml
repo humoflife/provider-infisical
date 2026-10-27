@@ -1,0 +1,46 @@
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: Certificate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/certificate
+  labels:
+    testing.upbound.io/example-name: api_direct
+  name: api-direct
+spec:
+  forProvider:
+    altNames:
+    - api.example.com
+    - api-internal.example.com
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: platform
+    commonName: api.example.com
+    country: US
+    extendedKeyUsages:
+    - server_auth
+    keyAlgorithm: RSA_2048
+    keyUsages:
+    - digital_signature
+    - key_encipherment
+    organization: Example Corp
+    profileIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    signatureAlgorithm: RSA-SHA256
+    timeoutSeconds: 300
+    ttl: 90d
+
+---
+
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: Application
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/certificate
+  labels:
+    testing.upbound.io/example-name: platform
+  name: platform
+spec:
+  forProvider:
+    description: Certificates issued for the platform team
+    name: platform

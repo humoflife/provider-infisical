@@ -13,7 +13,7 @@ import (
 	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
-type ConditionsInitParameters struct {
+type PermissionsConditionsInitParameters struct {
 
 	// (String) The environment slug this permission should allow.
 	// The environment slug this permission should allow.
@@ -24,7 +24,7 @@ type ConditionsInitParameters struct {
 	SecretPath *string `json:"secretPath,omitempty" tf:"secret_path,omitempty"`
 }
 
-type ConditionsObservation struct {
+type PermissionsConditionsObservation struct {
 
 	// (String) The environment slug this permission should allow.
 	// The environment slug this permission should allow.
@@ -35,7 +35,7 @@ type ConditionsObservation struct {
 	SecretPath *string `json:"secretPath,omitempty" tf:"secret_path,omitempty"`
 }
 
-type ConditionsParameters struct {
+type PermissionsConditionsParameters struct {
 
 	// (String) The environment slug this permission should allow.
 	// The environment slug this permission should allow.
@@ -55,7 +55,7 @@ type PermissionsInitParameters struct {
 	Action *string `json:"action,omitempty" tf:"action,omitempty"`
 
 	// (Attributes) The conditions to scope permissions (see below for nested schema)
-	Conditions *ConditionsInitParameters `json:"conditions,omitempty" tf:"conditions,omitempty"`
+	Conditions *PermissionsConditionsInitParameters `json:"conditions,omitempty" tf:"conditions,omitempty"`
 
 	// tokens,environments,tags,audit-logs,ip-allowlist,workspace,secrets,secret-rollback,secret-approval,secret-rotation,secret-validation-rules,identity,certificate-authorities,certificates,certificate-policies,kms,pki-alerts,pki-collections
 	// Describe what action an entity can take. Enum: role,member,groups,settings,integrations,webhooks,service-tokens,environments,tags,audit-logs,ip-allowlist,workspace,secrets,secret-rollback,secret-approval,secret-rotation,secret-validation-rules,identity,certificate-authorities,certificates,certificate-policies,kms,pki-alerts,pki-collections
@@ -69,7 +69,7 @@ type PermissionsObservation struct {
 	Action *string `json:"action,omitempty" tf:"action,omitempty"`
 
 	// (Attributes) The conditions to scope permissions (see below for nested schema)
-	Conditions *ConditionsObservation `json:"conditions,omitempty" tf:"conditions,omitempty"`
+	Conditions *PermissionsConditionsObservation `json:"conditions,omitempty" tf:"conditions,omitempty"`
 
 	// tokens,environments,tags,audit-logs,ip-allowlist,workspace,secrets,secret-rollback,secret-approval,secret-rotation,secret-validation-rules,identity,certificate-authorities,certificates,certificate-policies,kms,pki-alerts,pki-collections
 	// Describe what action an entity can take. Enum: role,member,groups,settings,integrations,webhooks,service-tokens,environments,tags,audit-logs,ip-allowlist,workspace,secrets,secret-rollback,secret-approval,secret-rotation,secret-validation-rules,identity,certificate-authorities,certificates,certificate-policies,kms,pki-alerts,pki-collections
@@ -85,74 +85,10 @@ type PermissionsParameters struct {
 
 	// (Attributes) The conditions to scope permissions (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	Conditions *ConditionsParameters `json:"conditions,omitempty" tf:"conditions,omitempty"`
+	Conditions *PermissionsConditionsParameters `json:"conditions,omitempty" tf:"conditions,omitempty"`
 
 	// tokens,environments,tags,audit-logs,ip-allowlist,workspace,secrets,secret-rollback,secret-approval,secret-rotation,secret-validation-rules,identity,certificate-authorities,certificates,certificate-policies,kms,pki-alerts,pki-collections
 	// Describe what action an entity can take. Enum: role,member,groups,settings,integrations,webhooks,service-tokens,environments,tags,audit-logs,ip-allowlist,workspace,secrets,secret-rollback,secret-approval,secret-rotation,secret-validation-rules,identity,certificate-authorities,certificates,certificate-policies,kms,pki-alerts,pki-collections
-	// +kubebuilder:validation:Optional
-	Subject *string `json:"subject" tf:"subject,omitempty"`
-}
-
-type PermissionsV2InitParameters struct {
-
-	// (String) Describe what action an entity can take. Enum: create,edit,delete,read
-	// Describe what actions an entity can take.
-	// +listType=set
-	Action []*string `json:"action,omitempty" tf:"action,omitempty"`
-
-	// (Attributes) The conditions to scope permissions (see below for nested schema)
-	// When specified, only matching conditions will be allowed to access given resource. Refer to the documentation in https://infisical.com/docs/internals/permissions#conditions for the complete list of supported properties and operators.
-	Conditions *string `json:"conditions,omitempty" tf:"conditions,omitempty"`
-
-	// (Boolean) Whether rule forbids. Set this to true if permission forbids.
-	// Whether rule forbids. Set this to true if permission forbids.
-	Inverted *bool `json:"inverted,omitempty" tf:"inverted,omitempty"`
-
-	// tokens,environments,tags,audit-logs,ip-allowlist,workspace,secrets,secret-rollback,secret-approval,secret-rotation,secret-validation-rules,identity,certificate-authorities,certificates,certificate-policies,kms,pki-alerts,pki-collections
-	// Describe the entity the permission pertains to.
-	Subject *string `json:"subject,omitempty" tf:"subject,omitempty"`
-}
-
-type PermissionsV2Observation struct {
-
-	// (String) Describe what action an entity can take. Enum: create,edit,delete,read
-	// Describe what actions an entity can take.
-	// +listType=set
-	Action []*string `json:"action,omitempty" tf:"action,omitempty"`
-
-	// (Attributes) The conditions to scope permissions (see below for nested schema)
-	// When specified, only matching conditions will be allowed to access given resource. Refer to the documentation in https://infisical.com/docs/internals/permissions#conditions for the complete list of supported properties and operators.
-	Conditions *string `json:"conditions,omitempty" tf:"conditions,omitempty"`
-
-	// (Boolean) Whether rule forbids. Set this to true if permission forbids.
-	// Whether rule forbids. Set this to true if permission forbids.
-	Inverted *bool `json:"inverted,omitempty" tf:"inverted,omitempty"`
-
-	// tokens,environments,tags,audit-logs,ip-allowlist,workspace,secrets,secret-rollback,secret-approval,secret-rotation,secret-validation-rules,identity,certificate-authorities,certificates,certificate-policies,kms,pki-alerts,pki-collections
-	// Describe the entity the permission pertains to.
-	Subject *string `json:"subject,omitempty" tf:"subject,omitempty"`
-}
-
-type PermissionsV2Parameters struct {
-
-	// (String) Describe what action an entity can take. Enum: create,edit,delete,read
-	// Describe what actions an entity can take.
-	// +kubebuilder:validation:Optional
-	// +listType=set
-	Action []*string `json:"action" tf:"action,omitempty"`
-
-	// (Attributes) The conditions to scope permissions (see below for nested schema)
-	// When specified, only matching conditions will be allowed to access given resource. Refer to the documentation in https://infisical.com/docs/internals/permissions#conditions for the complete list of supported properties and operators.
-	// +kubebuilder:validation:Optional
-	Conditions *string `json:"conditions,omitempty" tf:"conditions,omitempty"`
-
-	// (Boolean) Whether rule forbids. Set this to true if permission forbids.
-	// Whether rule forbids. Set this to true if permission forbids.
-	// +kubebuilder:validation:Optional
-	Inverted *bool `json:"inverted,omitempty" tf:"inverted,omitempty"`
-
-	// tokens,environments,tags,audit-logs,ip-allowlist,workspace,secrets,secret-rollback,secret-approval,secret-rotation,secret-validation-rules,identity,certificate-authorities,certificates,certificate-policies,kms,pki-alerts,pki-collections
-	// Describe the entity the permission pertains to.
 	// +kubebuilder:validation:Optional
 	Subject *string `json:"subject" tf:"subject,omitempty"`
 }
@@ -171,7 +107,7 @@ type ProjectRoleInitParameters struct {
 	Permissions []PermissionsInitParameters `json:"permissions,omitempty" tf:"permissions,omitempty"`
 
 	// permissions for its usage. (see below for nested schema)
-	PermissionsV2 []PermissionsV2InitParameters `json:"permissionsV2,omitempty" tf:"permissions_v2,omitempty"`
+	PermissionsV2 []ProjectRolePermissionsV2InitParameters `json:"permissionsV2,omitempty" tf:"permissions_v2,omitempty"`
 
 	// (String) The ID of the project to create role. Must provide either project_id or project_slug, but not both.
 	// The ID of the project to create role. Must provide either project_id or project_slug, but not both.
@@ -203,7 +139,7 @@ type ProjectRoleObservation struct {
 	Permissions []PermissionsObservation `json:"permissions,omitempty" tf:"permissions,omitempty"`
 
 	// permissions for its usage. (see below for nested schema)
-	PermissionsV2 []PermissionsV2Observation `json:"permissionsV2,omitempty" tf:"permissions_v2,omitempty"`
+	PermissionsV2 []ProjectRolePermissionsV2Observation `json:"permissionsV2,omitempty" tf:"permissions_v2,omitempty"`
 
 	// (String) The ID of the project to create role. Must provide either project_id or project_slug, but not both.
 	// The ID of the project to create role. Must provide either project_id or project_slug, but not both.
@@ -236,7 +172,7 @@ type ProjectRoleParameters struct {
 
 	// permissions for its usage. (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	PermissionsV2 []PermissionsV2Parameters `json:"permissionsV2,omitempty" tf:"permissions_v2,omitempty"`
+	PermissionsV2 []ProjectRolePermissionsV2Parameters `json:"permissionsV2,omitempty" tf:"permissions_v2,omitempty"`
 
 	// (String) The ID of the project to create role. Must provide either project_id or project_slug, but not both.
 	// The ID of the project to create role. Must provide either project_id or project_slug, but not both.
@@ -252,6 +188,70 @@ type ProjectRoleParameters struct {
 	// The slug for the new role
 	// +kubebuilder:validation:Optional
 	Slug *string `json:"slug,omitempty" tf:"slug,omitempty"`
+}
+
+type ProjectRolePermissionsV2InitParameters struct {
+
+	// (String) Describe what action an entity can take. Enum: create,edit,delete,read
+	// Describe what actions an entity can take.
+	// +listType=set
+	Action []*string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// (Attributes) The conditions to scope permissions (see below for nested schema)
+	// When specified, only matching conditions will be allowed to access given resource. Refer to the documentation in https://infisical.com/docs/internals/permissions#conditions for the complete list of supported properties and operators.
+	Conditions *string `json:"conditions,omitempty" tf:"conditions,omitempty"`
+
+	// (Boolean) Whether rule forbids. Set this to true if permission forbids.
+	// Whether rule forbids. Set this to true if permission forbids.
+	Inverted *bool `json:"inverted,omitempty" tf:"inverted,omitempty"`
+
+	// tokens,environments,tags,audit-logs,ip-allowlist,workspace,secrets,secret-rollback,secret-approval,secret-rotation,secret-validation-rules,identity,certificate-authorities,certificates,certificate-policies,kms,pki-alerts,pki-collections
+	// Describe the entity the permission pertains to.
+	Subject *string `json:"subject,omitempty" tf:"subject,omitempty"`
+}
+
+type ProjectRolePermissionsV2Observation struct {
+
+	// (String) Describe what action an entity can take. Enum: create,edit,delete,read
+	// Describe what actions an entity can take.
+	// +listType=set
+	Action []*string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// (Attributes) The conditions to scope permissions (see below for nested schema)
+	// When specified, only matching conditions will be allowed to access given resource. Refer to the documentation in https://infisical.com/docs/internals/permissions#conditions for the complete list of supported properties and operators.
+	Conditions *string `json:"conditions,omitempty" tf:"conditions,omitempty"`
+
+	// (Boolean) Whether rule forbids. Set this to true if permission forbids.
+	// Whether rule forbids. Set this to true if permission forbids.
+	Inverted *bool `json:"inverted,omitempty" tf:"inverted,omitempty"`
+
+	// tokens,environments,tags,audit-logs,ip-allowlist,workspace,secrets,secret-rollback,secret-approval,secret-rotation,secret-validation-rules,identity,certificate-authorities,certificates,certificate-policies,kms,pki-alerts,pki-collections
+	// Describe the entity the permission pertains to.
+	Subject *string `json:"subject,omitempty" tf:"subject,omitempty"`
+}
+
+type ProjectRolePermissionsV2Parameters struct {
+
+	// (String) Describe what action an entity can take. Enum: create,edit,delete,read
+	// Describe what actions an entity can take.
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	Action []*string `json:"action" tf:"action,omitempty"`
+
+	// (Attributes) The conditions to scope permissions (see below for nested schema)
+	// When specified, only matching conditions will be allowed to access given resource. Refer to the documentation in https://infisical.com/docs/internals/permissions#conditions for the complete list of supported properties and operators.
+	// +kubebuilder:validation:Optional
+	Conditions *string `json:"conditions,omitempty" tf:"conditions,omitempty"`
+
+	// (Boolean) Whether rule forbids. Set this to true if permission forbids.
+	// Whether rule forbids. Set this to true if permission forbids.
+	// +kubebuilder:validation:Optional
+	Inverted *bool `json:"inverted,omitempty" tf:"inverted,omitempty"`
+
+	// tokens,environments,tags,audit-logs,ip-allowlist,workspace,secrets,secret-rollback,secret-approval,secret-rotation,secret-validation-rules,identity,certificate-authorities,certificates,certificate-policies,kms,pki-alerts,pki-collections
+	// Describe the entity the permission pertains to.
+	// +kubebuilder:validation:Optional
+	Subject *string `json:"subject" tf:"subject,omitempty"`
 }
 
 // ProjectRoleSpec defines the desired state of ProjectRole

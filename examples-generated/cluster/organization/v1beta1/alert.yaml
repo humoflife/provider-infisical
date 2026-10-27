@@ -1,0 +1,26 @@
+apiVersion: organization.infisical.upbound.io/v1beta1
+kind: Alert
+metadata:
+  annotations:
+    meta.upbound.io/example-id: organization/v1beta1/alert
+  labels:
+    testing.upbound.io/example-name: ci_identity
+  name: ci-identity
+spec:
+  forProvider:
+    channels:
+      security_team:
+        email:
+          recipients:
+          - id: <your-user-id>
+            type: user
+          - id: <your-group-id>
+            type: group
+        name: Security team
+    condition:
+      alertBeforeDays: 30
+    description: Rotate the CI machine identity client secret before it expires
+    eventType: expiry
+    name: CI identity credentials expiring
+    resourceId: <your-machine-identity-id>
+    resourceType: identity.authentication

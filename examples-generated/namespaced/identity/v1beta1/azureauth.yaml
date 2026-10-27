@@ -1,0 +1,38 @@
+apiVersion: identity.infisical.m.upbound.io/v1beta1
+kind: AzureAuth
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/azureauth
+  labels:
+    testing.upbound.io/example-name: azure-auth
+  name: azure-auth
+  namespace: default
+spec:
+  forProvider:
+    accessTokenMaxTtl: 2592000
+    accessTokenTtl: 2592000
+    allowedServicePrincipalIds:
+    - <>
+    - <>
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: machine-identity-1
+    resourceUrl: https://management.azure.com/
+    tenantId: <>
+
+---
+
+apiVersion: identity.infisical.m.upbound.io/v1beta1
+kind: Identity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/azureauth
+  labels:
+    testing.upbound.io/example-name: machine-identity-1
+  name: machine-identity-1
+  namespace: default
+spec:
+  forProvider:
+    name: machine-identity-1
+    orgId: 601815be-6884-4ee4-86c7-bfc6415f2123
+    role: admin

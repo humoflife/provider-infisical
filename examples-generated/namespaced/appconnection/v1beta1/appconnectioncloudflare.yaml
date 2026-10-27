@@ -1,0 +1,21 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionCloudflare
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectioncloudflare
+  labels:
+    testing.upbound.io/example-name: app-connection-cloudflare
+  name: app-connection-cloudflare
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      accountIdSecretRef:
+        key: example-key
+        name: example-secret
+      apiTokenSecretRef:
+        key: example-key
+        name: example-secret
+    description: I am a Cloudflare app connection
+    method: api-token
+    name: cloudflare-app-connection

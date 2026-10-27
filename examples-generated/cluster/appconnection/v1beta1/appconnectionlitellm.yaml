@@ -1,0 +1,19 @@
+apiVersion: appconnection.infisical.upbound.io/v1beta1
+kind: AppConnectionLitellm
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionlitellm
+  labels:
+    testing.upbound.io/example-name: litellm-demo
+  name: litellm-demo
+spec:
+  forProvider:
+    credentials:
+      apiKeySecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      instanceUrl: https://litellm.example.com
+    description: This is a demo LiteLLM connection.
+    method: api-key
+    name: litellm-demo

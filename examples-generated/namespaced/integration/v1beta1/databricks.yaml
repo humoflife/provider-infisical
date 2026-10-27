@@ -1,0 +1,21 @@
+apiVersion: integration.infisical.m.upbound.io/v1beta1
+kind: Databricks
+metadata:
+  annotations:
+    meta.upbound.io/example-id: integration/v1beta1/databricks
+  labels:
+    testing.upbound.io/example-name: db-integration
+  name: db-integration
+  namespace: default
+spec:
+  forProvider:
+    databricksHost: <databricks-host>
+    databricksSecretScope: <databricks-secret-scope>
+    databricksTokenSecretRef:
+      key: example-key
+      name: example-secret
+    environment: <env-slug>
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    secretPath: /some/infisical/folder

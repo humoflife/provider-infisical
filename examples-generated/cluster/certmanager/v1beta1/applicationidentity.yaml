@@ -1,0 +1,48 @@
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: ApplicationIdentity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationidentity
+  labels:
+    testing.upbound.io/example-name: platform_ci
+  name: platform-ci
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: platform
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: ci
+    role: operator
+
+---
+
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: Application
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationidentity
+  labels:
+    testing.upbound.io/example-name: platform
+  name: platform
+spec:
+  forProvider:
+    name: platform
+
+---
+
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: Identity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationidentity
+  labels:
+    testing.upbound.io/example-name: ci
+  name: ci
+spec:
+  forProvider:
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    role: member

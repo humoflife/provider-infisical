@@ -1,0 +1,48 @@
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: ApplicationGroup
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationgroup
+  labels:
+    testing.upbound.io/example-name: platform_sre_admins
+  name: platform-sre-admins
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: platform
+    groupIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: sre
+    role: admin
+
+---
+
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: Application
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationgroup
+  labels:
+    testing.upbound.io/example-name: platform
+  name: platform
+spec:
+  forProvider:
+    name: platform
+
+---
+
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationgroup
+  labels:
+    testing.upbound.io/example-name: sre
+  name: sre
+spec:
+  forProvider:
+    groupIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    role: member

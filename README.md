@@ -118,6 +118,28 @@ Now you can use `providerConfigRef.name: default` in your managed resources.
 The cluster scoped managed resources are in the `*.infisical.upbound.io` API
 groups, for example `project.infisical.upbound.io/v1beta1`.
 
+#### Managed resources
+
+The provider has a managed resource for each of the 145 resources of the
+Infisical Terraform provider. Every kind exists cluster scoped and namespaced.
+
+| API group | Kinds |
+|---|---|
+| `appconnection.infisical.upbound.io` | AppConnectionAws, AppConnectionAzureAppConfiguration, AppConnectionAzureClientSecrets, AppConnectionAzureDevops, AppConnectionAzureKeyVault, AppConnectionBitbucket, AppConnectionChef, AppConnectionCircleci, AppConnectionCloudflare, AppConnectionDatabricks, AppConnectionDatadog, AppConnectionDigicert, AppConnectionF5BigIp, AppConnectionFlyio, AppConnectionGcp, AppConnectionGithub, AppConnectionGitlab, AppConnectionHashicorpVault, AppConnectionKempLoadmaster, AppConnectionLdap, AppConnectionLitellm, AppConnectionMssql, AppConnectionMysql, AppConnectionNetscaler, AppConnectionNutanixPrismCentral, AppConnectionOnePassword, AppConnectionOracledb, AppConnectionPostgres, AppConnectionRender, AppConnectionSpacelift, AppConnectionSsh, AppConnectionSupabase, AppConnectionWinrm |
+| `certificatesync.infisical.upbound.io` | AwsCertificateManager, AwsElasticLoadBalancer, AwsSecretsManager, AzureKeyVault, Certificate, Chef, CloudflareCustomCertificate, F5BigIp, GcpCertificateManager, KempLoadmaster, LinuxServer, Netscaler, NutanixPrismCentral, WindowsServer |
+| `certmanager.infisical.upbound.io` | Application, ApplicationApprovalPolicy, ApplicationGroup, ApplicationIdentity, ApplicationProfile, ApplicationUser, CaCertificate, Certificate, CertificatePolicy, CertificateProfile, ExternalCaAcme, ExternalCaAdcs, ExternalCaDigicert, Group, Identity, InternalCa, User |
+| `dynamicsecret.infisical.upbound.io` | AwsIam, Kubernetes, MongoAtlas, MongoDb, SqlDatabase |
+| `gateway.infisical.upbound.io` | EnrollmentToken, Gateway |
+| `group.infisical.upbound.io` | Group, GroupMachineIdentity |
+| `identity.infisical.upbound.io` | AwsAuth, AzureAuth, GcpAuth, Identity, JwtAuth, KubernetesAuth, KubernetesAuthTemplate, OidcAuth, OidcAuthTemplate, TlsCertAuth, TokenAuth, TokenAuthToken, UniversalAuth, UniversalAuthClientSecret |
+| `integration.infisical.upbound.io` | AwsParameterStore, AwsSecretsManager, Circleci, Databricks, GcpSecretManager |
+| `kms.infisical.upbound.io` | ExternalAws, Key |
+| `organization.infisical.upbound.io` | Alert, Role, SubOrganization, SubOrganizationGroup |
+| `project.infisical.upbound.io` | AccessApprovalPolicy, Project, ProjectEnvironment, ProjectGroup, ProjectIdentity, ProjectIdentitySpecificPrivilege, ProjectRole, ProjectScopedIdentity, ProjectTemplate, ProjectUser, SecretApprovalPolicy, Webhook |
+| `secret.infisical.upbound.io` | Secret, SecretFolder, SecretImport, SecretTag, SecretValidationRuleDynamicSecrets, SecretValidationRuleSecretRotations, SecretValidationRuleStaticSecrets |
+| `secretrotation.infisical.upbound.io` | SecretRotationAuth0ClientSecret, SecretRotationAwsIamUserSecret, SecretRotationAzureClientSecret, SecretRotationDatadogApiKey, SecretRotationLdapPassword, SecretRotationLitellmApiKey, SecretRotationMssqlCredentials, SecretRotationMysqlCredentials, SecretRotationOracledbCredentials, SecretRotationPostgresCredentials |
+| `secretsync.infisical.upbound.io` | SecretSyncAwsParameterStore, SecretSyncAwsSecretsManager, SecretSyncAzureAppConfiguration, SecretSyncAzureDevops, SecretSyncAzureKeyVault, SecretSyncBitbucket, SecretSyncCircleci, SecretSyncCloudflarePages, SecretSyncCloudflareWorkers, SecretSyncDatabricks, SecretSyncFlyio, SecretSyncGcpSecretManager, SecretSyncGithub, SecretSyncGitlab, SecretSyncOnePassword, SecretSyncRender, SecretSyncSpacelift, SecretSyncSupabase |
+
 #### Namespaced managed resources
 
 Every kind is also available as a namespaced managed resource in the

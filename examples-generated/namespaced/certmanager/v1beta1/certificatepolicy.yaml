@@ -1,0 +1,62 @@
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: CertificatePolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/certificatepolicy
+  labels:
+    testing.upbound.io/example-name: web_server
+  name: web-server
+  namespace: default
+spec:
+  forProvider:
+    algorithms:
+    - keyAlgorithm:
+      - RSA-2048
+      - RSA-3072
+      - ECDSA-P256
+      - ECDSA-P384
+      signature:
+      - SHA256-RSA
+      - SHA256-ECDSA
+      - SHA384-ECDSA
+    basicConstraints:
+    - isCa: denied
+    description: Policy for web server certificates
+    extendedKeyUsages:
+    - allowed:
+      - server_auth
+      - client_auth
+    keyUsages:
+    - allowed:
+      - digital_signature
+      - key_encipherment
+    name: web-server-policy
+    sans:
+    - allowed:
+      - '*.example.com'
+      - '*.internal.example.com'
+      required:
+      - '*.example.com'
+      type: dns_name
+    - allowed:
+      - '*@example.com'
+      type: email
+    - allowed:
+      - 10.0.0.0/8
+      - 192.168.0.0/16
+      type: ip_address
+    subject:
+    - allowed:
+      - '*.example.com'
+      - '*.internal.example.com'
+      required:
+      - '*.example.com'
+      type: common_name
+    - required:
+      - Example Corp
+      type: organization
+    - required:
+      - US
+      type: country
+    validity:
+    - max: 90d
