@@ -1,0 +1,34 @@
+apiVersion: project.infisical.m.upbound.io/v1beta1
+kind: ProjectEnvironment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: project/v1beta1/projectenvironment
+  labels:
+    testing.upbound.io/example-name: pre-prod
+  name: pre-prod
+  namespace: default
+spec:
+  forProvider:
+    name: pre-prod
+    position: 2
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    slug: preprod
+
+---
+
+apiVersion: project.infisical.m.upbound.io/v1beta1
+kind: Project
+metadata:
+  annotations:
+    meta.upbound.io/example-id: project/v1beta1/projectenvironment
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: default
+spec:
+  forProvider:
+    name: example
+    position: 1
+    slug: example

@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
 # End-to-end tests of provider-infisical. See test/e2e/README.md.
 #
-# Usage: test/e2e/run.sh <install|upgrade>
+# Usage: test/e2e/run.sh install
 #
-#   install  Install the locally built provider, then run the conversion tests
-#            (TestConversion) and the lifecycle tests of every kind in both API
-#            versions (TestLifecycle).
-#   upgrade  Install the released provider (OLD_PROVIDER_PACKAGE), create every
-#            kind as v1alpha1, upgrade in place to the locally built provider,
-#            and check that the existing objects keep working (TestUpgrade).
+#   install  Install the locally built provider, then run the lifecycle tests
+#            of every kind, cluster scoped and namespaced (TestLifecycle).
 #
 # The script creates a kind cluster, installs Crossplane CROSSPLANE_VERSION
 # and the provider, runs the Go tests in this folder, and deletes everything
@@ -18,8 +14,8 @@ set -euo pipefail
 
 SUITE="${1:-}"
 case "${SUITE}" in
-  install|upgrade) ;;
-  *) echo "usage: $0 <install|upgrade>" >&2; exit 2 ;;
+  install) ;;
+  *) echo "usage: $0 install" >&2; exit 2 ;;
 esac
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -56,7 +52,6 @@ KIND="${KIND:-kind}"
 HELM="${HELM:-helm}"
 KUBECTL="${KUBECTL:-kubectl}"
 CROSSPLANE_CLI="${CROSSPLANE_CLI:-crossplane}"
-OLD_PROVIDER_PACKAGE="${OLD_PROVIDER_PACKAGE:-xpkg.upbound.io/infisical-inc/provider-infisical:v0.1.15}"
 GOTESTSUM_VERSION="${GOTESTSUM_VERSION:-v1.13.0}"
 
 # Every run has its own ID, which is part of the names of the Infisical
@@ -72,6 +67,9 @@ export KUBECONFIG="${WORK_DIR}/kubeconfig"
 export KUBECACHEDIR="${WORK_DIR}/kube-cache"
 
 NS="crossplane-system"
+# The namespace of the namespaced managed resources, their ProviderConfig and
+# its credentials Secret. testNamespace in main_test.go has the same value.
+TEST_NS="e2e"
 PROVIDER_NAME="provider-infisical"
 RUNTIME_CONFIG_NAME="e2e-runtime"
 # The same fake digest as build/makelib/local.xpkg.mk. With the pull policy
@@ -127,8 +125,6 @@ load_local_package() {
   "${KUBECTL}" -n "${NS}" cp "${cache}" -c dev "${pod}:/tmp"
   "${KIND}" load docker-image "${PROVIDER_IMAGE}" --name "${KIND_CLUSTER_NAME}"
 
-  # The readiness probe makes the provider ready only when its API conversion
-  # webhook has started.
   "${KUBECTL}" apply -f - <<EOF
 apiVersion: pkg.crossplane.io/v1beta1
 kind: DeploymentRuntimeConfig
@@ -175,28 +171,6 @@ EOF
   endgroup
 }
 
-install_released_provider() {
-  group "Install the released provider ${OLD_PROVIDER_PACKAGE}"
-  "${KUBECTL}" apply -f - <<EOF
-apiVersion: pkg.crossplane.io/v1
-kind: Provider
-metadata:
-  name: ${PROVIDER_NAME}
-spec:
-  package: ${OLD_PROVIDER_PACKAGE}
-EOF
-  wait_provider "${OLD_PROVIDER_PACKAGE}"
-  endgroup
-}
-
-upgrade_provider() {
-  group "Upgrade the provider in place to the provider under test"
-  "${KUBECTL}" patch provider.pkg "${PROVIDER_NAME}" --type=merge \
-    -p "{\"spec\":{\"package\":\"${LOCAL_PACKAGE}\",\"packagePullPolicy\":\"Never\",\"runtimeConfigRef\":{\"name\":\"${RUNTIME_CONFIG_NAME}\"}}}"
-  wait_provider "${LOCAL_PACKAGE}"
-  endgroup
-}
-
 # Crossplane v1 sets a "Healthy" condition on a provider revision. Crossplane
 # v2 sets "RevisionHealthy" and "RuntimeHealthy" instead.
 revision_healthy() {
@@ -230,13 +204,18 @@ wait_provider() {
 }
 
 create_provider_config() {
-  group "Create the ProviderConfig for ${INFISICAL_HOST}"
-  local creds
+  group "Create the ProviderConfigs for ${INFISICAL_HOST}"
+  local creds namespace
   creds="$(jq -cn --arg id "${INFISICAL_CLIENT_ID}" --arg secret "${INFISICAL_CLIENT_SECRET}" '{auth:{universal:{client_id:$id,client_secret:$secret}}}')"
-  "${KUBECTL}" -n "${NS}" create secret generic e2e-provider-creds --from-literal=credentials="${creds}" \
-    --dry-run=client -o yaml | "${KUBECTL}" apply -f - >/dev/null
+  "${KUBECTL}" create namespace "${TEST_NS}" --dry-run=client -o yaml | "${KUBECTL}" apply -f - >/dev/null
+  for namespace in "${NS}" "${TEST_NS}"; do
+    "${KUBECTL}" -n "${namespace}" create secret generic e2e-provider-creds --from-literal=credentials="${creds}" \
+      --dry-run=client -o yaml | "${KUBECTL}" apply -f - >/dev/null
+  done
+  # The cluster scoped managed resources use the cluster scoped ProviderConfig,
+  # the namespaced ones the ProviderConfig in their namespace.
   "${KUBECTL}" apply -f - <<EOF
-apiVersion: crossplane.infisical.com/v1beta1
+apiVersion: infisical.upbound.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: default
@@ -248,17 +227,28 @@ spec:
       name: e2e-provider-creds
       namespace: ${NS}
       key: credentials
+---
+apiVersion: infisical.m.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: default
+  namespace: ${TEST_NS}
+spec:
+  host: ${INFISICAL_HOST}
+  credentials:
+    source: Secret
+    secretRef:
+      name: e2e-provider-creds
+      key: credentials
 EOF
   endgroup
 }
 
 # --- Tests -------------------------------------------------------------------
 
-# Run Go tests. The name is the name of the result file. The upgrade phase is
-# for TestUpgrade.
+# Run Go tests. The name is the name of the result file.
 run_go_tests() {
   local name="$1" pattern="$2" format="testname"
-  export E2E_UPGRADE_PHASE="${3:-}"
   [[ "${CI}" == "true" ]] && format="github-actions"
   log "running ${pattern} (run ID ${E2E_RUN_ID})"
   (cd "${ROOT_DIR}" && go run "gotest.tools/gotestsum@${GOTESTSUM_VERSION}" \
@@ -309,7 +299,7 @@ write_summary() {
 dump_diagnostics() {
   log "saving diagnostics to ${ARTIFACTS_DIR}"
   "${KUBECTL}" get pkg,pkgrev -o wide > "${ARTIFACTS_DIR}/packages.txt" 2>&1 || true
-  "${KUBECTL}" get managed -o yaml > "${ARTIFACTS_DIR}/managed-resources.yaml" 2>&1 || true
+  "${KUBECTL}" get managed -A -o yaml > "${ARTIFACTS_DIR}/managed-resources.yaml" 2>&1 || true
   "${KUBECTL}" -n "${NS}" get pods -o wide > "${ARTIFACTS_DIR}/pods.txt" 2>&1 || true
   "${KUBECTL}" -n "${NS}" logs -l "pkg.crossplane.io/provider=${PROVIDER_NAME}" --tail=-1 --all-containers > "${ARTIFACTS_DIR}/provider.log" 2>&1 || true
   "${KUBECTL}" -n "${NS}" logs deployment/crossplane -c crossplane --tail=-1 > "${ARTIFACTS_DIR}/crossplane.log" 2>&1 || true
@@ -317,21 +307,27 @@ dump_diagnostics() {
 }
 
 # Delete the objects that the tests left, so that nothing stays in Infisical:
-# first the objects that reference others, then the parents.
+# first the objects that reference others, then the parents. The cluster
+# scoped objects are listed without a namespace, the namespaced ones in
+# TEST_NS.
 delete_leftovers() {
-  local all parents children
-  all="$("${KUBECTL}" get managed -l "${RUN_SELECTOR}" -o name 2>/dev/null || true)"
-  [[ -n "${all}" ]] || return 0
-  log "deleting the objects that the tests left"
-  parents="$(grep -E '^(project\.project|identity\.identity|group\.group)\.' <<<"${all}" || true)"
-  children="$(grep -E -v '^(project\.project|identity\.identity|group\.group)\.' <<<"${all}" || true)"
-  # shellcheck disable=SC2086
-  [[ -z "${children}" ]] || "${KUBECTL}" delete ${children} --wait=true --timeout=180s >/dev/null 2>&1 || true
-  # shellcheck disable=SC2086
-  [[ -z "${parents}" ]] || "${KUBECTL}" delete ${parents} --wait=true --timeout=180s >/dev/null 2>&1 || true
-  all="$("${KUBECTL}" get managed -l "${RUN_SELECTOR}" -o name 2>/dev/null || true)"
-  if [[ -n "${all}" ]]; then
-    local message="some test objects were not deleted. Delete the Infisical resources with \"${E2E_RUN_ID}\" in their name by hand: $(tr '\n' ' ' <<<"${all}")"
+  local namespace_args all parents children remaining=""
+  for namespace_args in "" "-n ${TEST_NS}"; do
+    # shellcheck disable=SC2086
+    all="$("${KUBECTL}" get managed ${namespace_args} -l "${RUN_SELECTOR}" -o name 2>/dev/null || true)"
+    [[ -n "${all}" ]] || continue
+    log "deleting the objects that the tests left ${namespace_args}"
+    parents="$(grep -E '^(project\.project|identity\.identity|group\.group)\.' <<<"${all}" || true)"
+    children="$(grep -E -v '^(project\.project|identity\.identity|group\.group)\.' <<<"${all}" || true)"
+    # shellcheck disable=SC2086
+    [[ -z "${children}" ]] || "${KUBECTL}" delete ${namespace_args} ${children} --wait=true --timeout=180s >/dev/null 2>&1 || true
+    # shellcheck disable=SC2086
+    [[ -z "${parents}" ]] || "${KUBECTL}" delete ${namespace_args} ${parents} --wait=true --timeout=180s >/dev/null 2>&1 || true
+    # shellcheck disable=SC2086
+    remaining+="$("${KUBECTL}" get managed ${namespace_args} -l "${RUN_SELECTOR}" -o name 2>/dev/null || true)"
+  done
+  if [[ -n "${remaining}" ]]; then
+    local message="some test objects were not deleted. Delete the Infisical resources with \"${E2E_RUN_ID}\" in their name by hand: $(tr '\n' ' ' <<<"${remaining}")"
     if [[ "${CI}" == "true" ]]; then echo "::warning title=E2E cleanup::${message}"; fi
     log "WARNING: ${message}"
   fi
@@ -359,15 +355,7 @@ log "E2E ${SUITE} suite, Crossplane ${CROSSPLANE_VERSION}, run ID ${E2E_RUN_ID}"
 create_cluster
 install_crossplane
 load_local_package
-if [[ "${SUITE}" == "install" ]]; then
-  install_local_provider
-  create_provider_config
-  run_go_tests install '^(TestConversion|TestLifecycle)$'
-else
-  install_released_provider
-  create_provider_config
-  run_go_tests upgrade-before '^TestUpgrade$' before
-  upgrade_provider
-  run_go_tests upgrade-after '^TestUpgrade$' after
-fi
+install_local_provider
+create_provider_config
+run_go_tests install '^TestLifecycle$'
 log "PASS"

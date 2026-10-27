@@ -13,13 +13,9 @@ TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAF
 export TERRAFORM_PROVIDER_SOURCE ?= Infisical/infisical
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/Infisical/terraform-provider-infisical
 
-# The frozen v1alpha1 API types in apis/*/v1alpha1 were generated from the
-# Crossplane-specific legacy Terraform build crossplane-tf-provider/v0.0.20.
-# They are never generated again / frozen in-place and are unaffected by running "make generate".
-
-# Version of the normal Terraform provider release (the "v*" tags). The v1alpha2
-# API is generated from its schema, and the provider image runs it for all
-# resources.
+# Version of the normal Terraform provider release (the "v*" tags). The v1beta1
+# API is generated from its schema. The provider runs the Terraform provider
+# in-process from the Go module in go.mod, which must have the same version.
 export TERRAFORM_PROVIDER_VERSION ?= 0.20.6
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-infisical
 export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-infisical_v$(TERRAFORM_PROVIDER_VERSION)
@@ -66,8 +62,6 @@ GO_REQUIRED_VERSION ?= 1.26
 GOLANGCILINT_VERSION ?= 2.13.0
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
-GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.TerraformVersion=$(TERRAFORM_VERSION)
-GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.TerraformProviderSource=$(TERRAFORM_PROVIDER_SOURCE)
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.TerraformProviderVersion=$(TERRAFORM_PROVIDER_VERSION)
 GO_SUBDIRS += cmd internal apis
 -include build/makelib/golang.mk
@@ -212,12 +206,8 @@ submodules:
 # This is for running out-of-cluster locally, and is for convenience. Running
 # this make target will print out the command which was used. For more control,
 # try running the binary directly with different arguments.
-run: go.build download-provider-binary
+run: go.build
 	@$(INFO) Running Crossplane locally out-of-cluster . . .
-	mkdir -p $(TERRAFORM_WORKDIR)
-	cp $(ROOT_DIR)/local-terraformrc.hcl $(TERRAFORM_WORKDIR)/terraformrc.hcl
-	@mkdir -p /tmp/terraform/plugins/registry.terraform.io/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_PROVIDER_VERSION)/$(HOSTOS)_$(SAFEHOSTARCH)/
-	cp $(WORK_DIR)/$(TERRAFORM_NATIVE_PROVIDER_BINARY) /tmp/terraform/plugins/registry.terraform.io/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_PROVIDER_VERSION)/$(HOSTOS)_$(HOSTARCH)/
 	@# To see other arguments that can be provided, run the command with --help instead
 	UPBOUND_CONTEXT="local" $(GO_OUT_DIR)/provider --debug --poll=60s
 
@@ -257,9 +247,8 @@ e2e: local-deploy uptest
 
 # End-to-end tests in test/e2e. Run "make build" first. The tests need the
 # INFISICAL_* environment variables, see test/e2e/README.md.
-#   E2E_SUITE=install  API conversion tests, and the lifecycle of every kind in
-#                      both API versions, with the provider under test
-#   E2E_SUITE=upgrade  in-place upgrade from the released provider
+#   E2E_SUITE=install  the lifecycle of every kind, cluster scoped and
+#                      namespaced, with the provider under test
 E2E_SUITE ?= install
 E2E_PROVIDER_IMAGE ?= $(BUILD_REGISTRY)/$(PROJECT_NAME)-$(ARCH)
 E2E_PROVIDER_XPKG ?= $(XPKG_OUTPUT_DIR)/linux_$(ARCH)/$(PROJECT_NAME)-$(VERSION).xpkg

@@ -1,8 +1,8 @@
-apiVersion: project.crossplane.infisical.com/v1alpha1
+apiVersion: project.infisical.upbound.io/v1beta1
 kind: Project
 metadata:
   annotations:
-    meta.upbound.io/example-id: project/v1alpha1/project
+    meta.upbound.io/example-id: project/v1beta1/project
   labels:
     testing.upbound.io/example-name: gcp-project
   name: gcp-project
@@ -12,11 +12,11 @@ spec:
     name: Crossplane GCP Project
     slug: crossplane-gcp-project
 ---
-apiVersion: identity.crossplane.infisical.com/v1alpha1
+apiVersion: identity.infisical.upbound.io/v1beta1
 kind: Identity
 metadata:
   annotations:
-    meta.upbound.io/example-id: identity/v1alpha1/identity
+    meta.upbound.io/example-id: identity/v1beta1/identity
   labels:
     testing.upbound.io/example-name: universal-auth
   name: crossplane-identity
@@ -26,11 +26,11 @@ spec:
     orgId: df92581a-0fe9-42b5-b526-0a1e88ec8085
     role: admin
 ---
-apiVersion: project.crossplane.infisical.com/v1alpha1
+apiVersion: project.infisical.upbound.io/v1beta1
 kind: ProjectIdentity
 metadata:
   annotations:
-    meta.upbound.io/example-id: project/v1alpha1/projectidentity
+    meta.upbound.io/example-id: project/v1beta1/projectidentity
   labels:
     testing.upbound.io/example-name: test-identity
   name: crossplane-project-identity-assignment
@@ -40,13 +40,14 @@ spec:
       name: crossplane-identity
     projectIdRef:
       name: gcp-project
-    roles: '[{"role_slug": "admin"}]'
+    roles:
+      - roleSlug: admin
 ---
-apiVersion: project.crossplane.infisical.com/v1alpha1
+apiVersion: project.infisical.upbound.io/v1beta1
 kind: ProjectUser
 metadata:
   annotations:
-    meta.upbound.io/example-id: project/v1alpha1/projectuser
+    meta.upbound.io/example-id: project/v1beta1/projectuser
   labels:
     testing.upbound.io/example-name: test-user
   name: test-user
@@ -54,14 +55,15 @@ spec:
   forProvider:
     projectIdRef:
       name: gcp-project
-    roles: '[{"role_slug": "admin"}]'
+    roles:
+      - roleSlug: admin
     username: sheen@infisical.com
 ---
-apiVersion: identity.crossplane.infisical.com/v1alpha1
+apiVersion: identity.infisical.upbound.io/v1beta1
 kind: KubernetesAuth
 metadata:
   annotations:
-    meta.upbound.io/example-id: identity/v1alpha1/kubernetesauth
+    meta.upbound.io/example-id: identity/v1beta1/kubernetesauth
   labels:
     testing.upbound.io/example-name: test-kubernetes-auth
   name: test-kubernetes-auth

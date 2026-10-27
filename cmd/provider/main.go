@@ -17,9 +17,8 @@ import (
 	"github.com/crossplane/crossplane-runtime/v2/pkg/ratelimiter"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/reconciler/managed"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/statemetrics"
+	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 	tjcontroller "github.com/crossplane/upjet/v2/pkg/controller"
-	ujconversion "github.com/crossplane/upjet/v2/pkg/controller/conversion"
-	"github.com/crossplane/upjet/v2/pkg/terraform"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"k8s.io/client-go/tools/leaderelection/resourcelock"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -27,12 +26,15 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
-	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
-	"github.com/infisical/provider-infisical/apis"
+	"terraform-provider-infisical/xpprovider"
+
+	apisCluster "github.com/infisical/provider-infisical/apis/cluster"
+	apisNamespaced "github.com/infisical/provider-infisical/apis/namespaced"
 	"github.com/infisical/provider-infisical/config"
 	"github.com/infisical/provider-infisical/internal/clients"
-	"github.com/infisical/provider-infisical/internal/controller"
+	controllerCluster "github.com/infisical/provider-infisical/internal/controller/cluster"
+	controllerNamespaced "github.com/infisical/provider-infisical/internal/controller/namespaced"
 	"github.com/infisical/provider-infisical/internal/features"
 	"github.com/infisical/provider-infisical/internal/version"
 )
@@ -52,8 +54,11 @@ func main() {
 
 		healthProbeBindAddr = app.Flag("health-probe-bind-addr", "The address the health probe endpoints (/healthz, /readyz) listen on.").Default(":8081").Envar("HEALTH_PROBE_BIND_ADDRESS").String()
 
-		webhookPort = app.Flag("webhook-port", "The port the API conversion webhook listens on.").Default("9443").Envar("WEBHOOK_PORT").Int()
-		certsDir    = app.Flag("certs-dir", "The directory with the TLS certificate (tls.crt) and key (tls.key) of the API conversion webhook. Default: the directory that Crossplane mounts.").Envar("CERTS_DIR").String()
+		// Every API has a single version, so the provider runs no conversion
+		// webhook. These flags are kept as hidden no-ops, so that existing
+		// deployments that still pass them do not fail to start.
+		_ = app.Flag("webhook-port", "Deprecated: has no effect.").Hidden().Envar("WEBHOOK_PORT").Int()
+		_ = app.Flag("certs-dir", "Deprecated: has no effect.").Hidden().Envar("CERTS_DIR").String()
 
 		// External Secret Stores were removed in Crossplane v2. These flags
 		// are kept as hidden no-ops, so that existing deployments that still
@@ -65,10 +70,10 @@ func main() {
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
-	// The build sets the Terraform settings from the Makefile, so that they
-	// always match the Terraform CLI and provider binaries in the image.
-	if version.TerraformVersion == "" || version.TerraformProviderSource == "" || version.TerraformProviderVersion == "" {
-		kingpin.Fatalf("the Terraform settings are not set: build the provider with make")
+	// The build sets the Terraform provider version from the Makefile, so
+	// that it matches the version of the Terraform provider Go module.
+	if version.TerraformProviderVersion == "" {
+		kingpin.Fatalf("the Terraform provider version is not set: build the provider with make")
 	}
 
 	zl := zap.New(zap.UseDevMode(*debug))
@@ -97,14 +102,6 @@ func main() {
 		RenewDeadline:              func() *time.Duration { d := 50 * time.Second; return &d }(),
 	}
 
-	// Crossplane mounts the TLS certificate of the provider and sets one of
-	// these variables. Older Crossplane versions use WEBHOOK_TLS_CERT_DIR.
-	webhookCertsDir := firstNonEmpty(*certsDir, os.Getenv("TLS_SERVER_CERTS_DIR"), os.Getenv("WEBHOOK_TLS_CERT_DIR"), "/tls/server")
-	controllerOpts.WebhookServer = webhook.NewServer(webhook.Options{
-		CertDir: webhookCertsDir,
-		Port:    *webhookPort,
-	})
-
 	if metricsAddr != nil && *metricsAddr != "" {
 		controllerOpts.Metrics = metricsserver.Options{
 			BindAddress: *metricsAddr,
@@ -113,7 +110,8 @@ func main() {
 
 	mgr, err := ctrl.NewManager(cfg, controllerOpts)
 	kingpin.FatalIfError(err, "Cannot create controller manager")
-	kingpin.FatalIfError(apis.AddToScheme(mgr.GetScheme()), "Cannot add Infisical APIs to scheme")
+	kingpin.FatalIfError(apisCluster.AddToScheme(mgr.GetScheme()), "Cannot add cluster scoped Infisical APIs to scheme")
+	kingpin.FatalIfError(apisNamespaced.AddToScheme(mgr.GetScheme()), "Cannot add namespaced Infisical APIs to scheme")
 
 	metricRecorder := managed.NewMRMetricRecorder()
 	stateMetrics := statemetrics.NewMRStateMetrics()
@@ -121,56 +119,47 @@ func main() {
 	metrics.Registry.MustRegister(metricRecorder)
 	metrics.Registry.MustRegister(stateMetrics)
 
-	o := tjcontroller.Options{
-		Options: xpcontroller.Options{
-			Logger:                  log,
-			GlobalRateLimiter:       ratelimiter.NewGlobal(*maxReconcileRate),
-			PollInterval:            *pollInterval,
-			MaxConcurrentReconciles: *maxReconcileRate,
-			Features:                &feature.Flags{},
-			MetricOptions: &xpcontroller.MetricOptions{
-				PollStateMetricInterval: *pollStateMetricInterval,
-				MRMetrics:               metricRecorder,
-				MRStateMetrics:          stateMetrics,
+	// The Terraform provider runs in-process (no-fork). Its resources are
+	// reconciled with the Terraform Plugin Framework, so no Terraform CLI
+	// workspaces are needed.
+	setupFn := clients.TerraformSetupBuilder(xpprovider.New(version.TerraformProviderVersion))
+	operationTrackerStore := tjcontroller.NewOperationStore(log)
+	newOptions := func(provider *ujconfig.Provider) tjcontroller.Options {
+		return tjcontroller.Options{
+			Options: xpcontroller.Options{
+				Logger:                  log,
+				GlobalRateLimiter:       ratelimiter.NewGlobal(*maxReconcileRate),
+				PollInterval:            *pollInterval,
+				MaxConcurrentReconciles: *maxReconcileRate,
+				Features:                &feature.Flags{},
+				MetricOptions: &xpcontroller.MetricOptions{
+					PollStateMetricInterval: *pollStateMetricInterval,
+					MRMetrics:               metricRecorder,
+					MRStateMetrics:          stateMetrics,
+				},
 			},
-		},
-		Provider: config.GetProvider(),
-		// use the following WorkspaceStoreOption to enable the shared gRPC mode
-		// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
-		WorkspaceStore: terraform.NewWorkspaceStore(log),
-		SetupFn:        clients.TerraformSetupBuilder(version.TerraformVersion, version.TerraformProviderSource, version.TerraformProviderVersion),
+			Provider:              provider,
+			SetupFn:               setupFn,
+			OperationTrackerStore: operationTrackerStore,
+		}
 	}
+	clusterOpts := newOptions(config.GetProvider())
+	namespacedOpts := newOptions(config.GetProviderNamespaced())
 
 	if *enableExternalSecretStores {
 		log.Info("External Secret Stores are no longer supported, ignoring the enable-external-secret-stores flag")
 	}
 
 	if *enableManagementPolicies {
-		o.Features.Enable(features.EnableBetaManagementPolicies)
+		clusterOpts.Features.Enable(features.EnableBetaManagementPolicies)
+		namespacedOpts.Features.Enable(features.EnableBetaManagementPolicies)
 		log.Info("Beta feature enabled", "flag", features.EnableBetaManagementPolicies)
 	}
 
-	// the managed resources serve v1alpha1 and v1alpha2. The API server calls this webhook to convert between them
-	if _, err := os.Stat(filepath.Join(webhookCertsDir, "tls.crt")); err == nil {
-		kingpin.FatalIfError(ujconversion.RegisterConversions(o.Provider, nil, mgr.GetScheme()), "Cannot register the API conversions")
-		kingpin.FatalIfError(controller.SetupWebhookWithManager(mgr), "Cannot setup the API conversion webhook")
-		// The API server cannot read or write the managed resources while the conversion webhook is down, so the provider is only ready when the webhook server has started
-		kingpin.FatalIfError(mgr.AddReadyzCheck("webhook", mgr.GetWebhookServer().StartedChecker()), "Cannot add the webhook readiness check")
-	} else {
-		log.Info("No TLS certificate for the API conversion webhook, the webhook is not started. Only the storage version of the APIs can be used.", "certs-dir", webhookCertsDir)
-		kingpin.FatalIfError(mgr.AddReadyzCheck("ping", healthz.Ping), "Cannot add the readiness check")
-	}
+	kingpin.FatalIfError(mgr.AddReadyzCheck("ping", healthz.Ping), "Cannot add the readiness check")
 	kingpin.FatalIfError(mgr.AddHealthzCheck("ping", healthz.Ping), "Cannot add the health check")
 
-	kingpin.FatalIfError(controller.Setup(mgr, o), "Cannot setup Infisical controllers")
+	kingpin.FatalIfError(controllerCluster.Setup(mgr, clusterOpts), "Cannot setup cluster scoped Infisical controllers")
+	kingpin.FatalIfError(controllerNamespaced.Setup(mgr, namespacedOpts), "Cannot setup namespaced Infisical controllers")
 	kingpin.FatalIfError(mgr.Start(ctrl.SetupSignalHandler()), "Cannot start controller manager")
-}
-
-func firstNonEmpty(values ...string) string {
-	for _, v := range values {
-		if v != "" {
-			return v
-		}
-	}
-	return ""
 }
