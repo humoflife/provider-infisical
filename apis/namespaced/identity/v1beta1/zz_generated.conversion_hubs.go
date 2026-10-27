@@ -7,10 +7,43 @@
 package v1beta1
 
 // Hub marks this type as a conversion hub.
+func (tr *AwsAuth) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AzureAuth) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *GcpAuth) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Identity) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *JwtAuth) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *KubernetesAuth) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *KubernetesAuthTemplate) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *OidcAuth) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *OidcAuthTemplate) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *TlsCertAuth) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *TokenAuth) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *TokenAuthToken) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *UniversalAuth) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *UniversalAuthClientSecret) Hub() {}

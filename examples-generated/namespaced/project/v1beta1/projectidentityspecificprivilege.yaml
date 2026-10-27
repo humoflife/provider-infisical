@@ -1,0 +1,72 @@
+apiVersion: project.infisical.m.upbound.io/v1beta1
+kind: ProjectIdentitySpecificPrivilege
+metadata:
+  annotations:
+    meta.upbound.io/example-id: project/v1beta1/projectidentityspecificprivilege
+  labels:
+    testing.upbound.io/example-name: test-privilege
+  name: test-privilege
+  namespace: default
+spec:
+  forProvider:
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test-identity
+    permissionsV2:
+    - action:
+      - edit
+      inverted: true
+      subject: secret-folders
+    - action:
+      - describeSecret
+      - readValue
+      - edit
+      conditions: |-
+        ${jsonencode({
+                environment = {
+                  "$eq" = "dev"
+                }
+                secretPath = {
+                  "$eq" = "/"
+                }
+              })}
+      subject: secrets
+    projectSlug: gcp-project
+
+---
+
+apiVersion: project.infisical.m.upbound.io/v1beta1
+kind: Project
+metadata:
+  annotations:
+    meta.upbound.io/example-id: project/v1beta1/projectidentityspecificprivilege
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: default
+spec:
+  forProvider:
+    name: example
+    slug: example
+
+---
+
+apiVersion: project.infisical.m.upbound.io/v1beta1
+kind: ProjectIdentity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: project/v1beta1/projectidentityspecificprivilege
+  labels:
+    testing.upbound.io/example-name: test-identity
+  name: test-identity
+  namespace: default
+spec:
+  forProvider:
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    roles:
+    - roleSlug: admin

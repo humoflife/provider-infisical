@@ -1,0 +1,23 @@
+apiVersion: appconnection.infisical.upbound.io/v1beta1
+kind: AppConnectionMysql
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionmysql
+  labels:
+    testing.upbound.io/example-name: mysql-demo
+  name: mysql-demo
+spec:
+  forProvider:
+    credentials:
+      database: default
+      host: example.com
+      passwordSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      port: 3306
+      sslEnabled: false
+      username: root
+    description: This is a demo mysql connection.
+    method: username-and-password
+    name: mysql-demo

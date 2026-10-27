@@ -1,0 +1,17 @@
+apiVersion: gateway.infisical.m.upbound.io/v1beta1
+kind: Gateway
+metadata:
+  annotations:
+    meta.upbound.io/example-id: gateway/v1beta1/gateway
+  labels:
+    testing.upbound.io/example-name: aws
+  name: aws
+  namespace: default
+spec:
+  forProvider:
+    awsAuth:
+      allowedAccountIds:
+      - "123456789012"
+      allowedPrincipalArns:
+      - arn:aws:iam::123456789012:role/infisical-gateway
+    name: prod-us-east

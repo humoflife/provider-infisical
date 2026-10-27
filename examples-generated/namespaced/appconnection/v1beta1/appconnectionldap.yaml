@@ -1,0 +1,22 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionLdap
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionldap
+  labels:
+    testing.upbound.io/example-name: ldap-demo
+  name: ldap-demo
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      dn: cn=admin,dc=example,dc=com
+      passwordSecretRef:
+        key: example-key
+        name: example-secret
+      provider: active-directory
+      sslRejectUnauthorized: false
+      url: ldap://ldap.example.com:389
+    description: This is a demo LDAP connection.
+    method: simple-bind
+    name: ldap-demo

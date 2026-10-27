@@ -1,0 +1,31 @@
+apiVersion: identity.infisical.m.upbound.io/v1beta1
+kind: TokenAuth
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/tokenauth
+  labels:
+    testing.upbound.io/example-name: token-auth
+  name: token-auth
+  namespace: default
+spec:
+  forProvider:
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: machine-identity-1
+
+---
+
+apiVersion: identity.infisical.m.upbound.io/v1beta1
+kind: Identity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/tokenauth
+  labels:
+    testing.upbound.io/example-name: machine-identity-1
+  name: machine-identity-1
+  namespace: default
+spec:
+  forProvider:
+    name: machine-identity-1
+    orgId: <your-org-id>
+    role: admin

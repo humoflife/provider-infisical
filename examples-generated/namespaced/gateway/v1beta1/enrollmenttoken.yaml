@@ -1,0 +1,33 @@
+apiVersion: gateway.infisical.m.upbound.io/v1beta1
+kind: EnrollmentToken
+metadata:
+  annotations:
+    meta.upbound.io/example-id: gateway/v1beta1/enrollmenttoken
+  labels:
+    testing.upbound.io/example-name: datacenter
+  name: datacenter
+  namespace: default
+spec:
+  forProvider:
+    gatewayIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: datacenter
+    keepers:
+      ami_id: ${data.aws_ami.ubuntu.id}
+      subnet_id: ${var.subnet_id}
+
+---
+
+apiVersion: gateway.infisical.m.upbound.io/v1beta1
+kind: Gateway
+metadata:
+  annotations:
+    meta.upbound.io/example-id: gateway/v1beta1/enrollmenttoken
+  labels:
+    testing.upbound.io/example-name: datacenter
+  name: datacenter
+  namespace: default
+spec:
+  forProvider:
+    name: datacenter-01
+    tokenAuth: {}

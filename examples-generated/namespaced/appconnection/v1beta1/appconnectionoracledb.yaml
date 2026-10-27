@@ -1,0 +1,23 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionOracledb
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionoracledb
+  labels:
+    testing.upbound.io/example-name: oracledb-demo
+  name: oracledb-demo
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      database: ORCL
+      host: example.com
+      passwordSecretRef:
+        key: example-key
+        name: example-secret
+      port: 1521
+      sslEnabled: false
+      username: system
+    description: This is a demo Oracle Database connection.
+    method: username-and-password
+    name: oracledb-demo

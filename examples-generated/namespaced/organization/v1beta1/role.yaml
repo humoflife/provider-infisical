@@ -1,0 +1,28 @@
+apiVersion: organization.infisical.m.upbound.io/v1beta1
+kind: Role
+metadata:
+  annotations:
+    meta.upbound.io/example-id: organization/v1beta1/role
+  labels:
+    testing.upbound.io/example-name: tester
+  name: tester
+  namespace: default
+spec:
+  forProvider:
+    description: A test role
+    name: Tester
+    permissions:
+    - action:
+      - create
+      subject: project
+    - action:
+      - read
+      - create
+      conditions: |-
+        ${jsonencode({
+                connectionId = {
+                  "$eq" = "<connection-id>"
+                }
+              })}
+      subject: app-connections
+    slug: tester

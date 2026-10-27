@@ -8,6 +8,86 @@ package v1beta1
 
 import xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 
+// GetCondition of this SecretRotationAuth0ClientSecret.
+func (mg *SecretRotationAuth0ClientSecret) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this SecretRotationAuth0ClientSecret.
+func (mg *SecretRotationAuth0ClientSecret) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this SecretRotationAuth0ClientSecret.
+func (mg *SecretRotationAuth0ClientSecret) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this SecretRotationAuth0ClientSecret.
+func (mg *SecretRotationAuth0ClientSecret) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this SecretRotationAuth0ClientSecret.
+func (mg *SecretRotationAuth0ClientSecret) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this SecretRotationAuth0ClientSecret.
+func (mg *SecretRotationAuth0ClientSecret) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this SecretRotationAuth0ClientSecret.
+func (mg *SecretRotationAuth0ClientSecret) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this SecretRotationAuth0ClientSecret.
+func (mg *SecretRotationAuth0ClientSecret) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this SecretRotationAwsIamUserSecret.
+func (mg *SecretRotationAwsIamUserSecret) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this SecretRotationAwsIamUserSecret.
+func (mg *SecretRotationAwsIamUserSecret) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this SecretRotationAwsIamUserSecret.
+func (mg *SecretRotationAwsIamUserSecret) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this SecretRotationAwsIamUserSecret.
+func (mg *SecretRotationAwsIamUserSecret) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this SecretRotationAwsIamUserSecret.
+func (mg *SecretRotationAwsIamUserSecret) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this SecretRotationAwsIamUserSecret.
+func (mg *SecretRotationAwsIamUserSecret) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this SecretRotationAwsIamUserSecret.
+func (mg *SecretRotationAwsIamUserSecret) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this SecretRotationAwsIamUserSecret.
+func (mg *SecretRotationAwsIamUserSecret) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this SecretRotationAzureClientSecret.
 func (mg *SecretRotationAzureClientSecret) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
@@ -45,5 +125,285 @@ func (mg *SecretRotationAzureClientSecret) SetProviderConfigReference(r *xpv2.Pr
 
 // SetWriteConnectionSecretToReference of this SecretRotationAzureClientSecret.
 func (mg *SecretRotationAzureClientSecret) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this SecretRotationDatadogApiKey.
+func (mg *SecretRotationDatadogApiKey) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this SecretRotationDatadogApiKey.
+func (mg *SecretRotationDatadogApiKey) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this SecretRotationDatadogApiKey.
+func (mg *SecretRotationDatadogApiKey) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this SecretRotationDatadogApiKey.
+func (mg *SecretRotationDatadogApiKey) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this SecretRotationDatadogApiKey.
+func (mg *SecretRotationDatadogApiKey) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this SecretRotationDatadogApiKey.
+func (mg *SecretRotationDatadogApiKey) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this SecretRotationDatadogApiKey.
+func (mg *SecretRotationDatadogApiKey) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this SecretRotationDatadogApiKey.
+func (mg *SecretRotationDatadogApiKey) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this SecretRotationLdapPassword.
+func (mg *SecretRotationLdapPassword) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this SecretRotationLdapPassword.
+func (mg *SecretRotationLdapPassword) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this SecretRotationLdapPassword.
+func (mg *SecretRotationLdapPassword) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this SecretRotationLdapPassword.
+func (mg *SecretRotationLdapPassword) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this SecretRotationLdapPassword.
+func (mg *SecretRotationLdapPassword) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this SecretRotationLdapPassword.
+func (mg *SecretRotationLdapPassword) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this SecretRotationLdapPassword.
+func (mg *SecretRotationLdapPassword) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this SecretRotationLdapPassword.
+func (mg *SecretRotationLdapPassword) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this SecretRotationLitellmApiKey.
+func (mg *SecretRotationLitellmApiKey) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this SecretRotationLitellmApiKey.
+func (mg *SecretRotationLitellmApiKey) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this SecretRotationLitellmApiKey.
+func (mg *SecretRotationLitellmApiKey) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this SecretRotationLitellmApiKey.
+func (mg *SecretRotationLitellmApiKey) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this SecretRotationLitellmApiKey.
+func (mg *SecretRotationLitellmApiKey) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this SecretRotationLitellmApiKey.
+func (mg *SecretRotationLitellmApiKey) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this SecretRotationLitellmApiKey.
+func (mg *SecretRotationLitellmApiKey) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this SecretRotationLitellmApiKey.
+func (mg *SecretRotationLitellmApiKey) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this SecretRotationMssqlCredentials.
+func (mg *SecretRotationMssqlCredentials) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this SecretRotationMssqlCredentials.
+func (mg *SecretRotationMssqlCredentials) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this SecretRotationMssqlCredentials.
+func (mg *SecretRotationMssqlCredentials) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this SecretRotationMssqlCredentials.
+func (mg *SecretRotationMssqlCredentials) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this SecretRotationMssqlCredentials.
+func (mg *SecretRotationMssqlCredentials) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this SecretRotationMssqlCredentials.
+func (mg *SecretRotationMssqlCredentials) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this SecretRotationMssqlCredentials.
+func (mg *SecretRotationMssqlCredentials) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this SecretRotationMssqlCredentials.
+func (mg *SecretRotationMssqlCredentials) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this SecretRotationMysqlCredentials.
+func (mg *SecretRotationMysqlCredentials) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this SecretRotationMysqlCredentials.
+func (mg *SecretRotationMysqlCredentials) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this SecretRotationMysqlCredentials.
+func (mg *SecretRotationMysqlCredentials) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this SecretRotationMysqlCredentials.
+func (mg *SecretRotationMysqlCredentials) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this SecretRotationMysqlCredentials.
+func (mg *SecretRotationMysqlCredentials) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this SecretRotationMysqlCredentials.
+func (mg *SecretRotationMysqlCredentials) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this SecretRotationMysqlCredentials.
+func (mg *SecretRotationMysqlCredentials) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this SecretRotationMysqlCredentials.
+func (mg *SecretRotationMysqlCredentials) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this SecretRotationOracledbCredentials.
+func (mg *SecretRotationOracledbCredentials) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this SecretRotationOracledbCredentials.
+func (mg *SecretRotationOracledbCredentials) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this SecretRotationOracledbCredentials.
+func (mg *SecretRotationOracledbCredentials) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this SecretRotationOracledbCredentials.
+func (mg *SecretRotationOracledbCredentials) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this SecretRotationOracledbCredentials.
+func (mg *SecretRotationOracledbCredentials) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this SecretRotationOracledbCredentials.
+func (mg *SecretRotationOracledbCredentials) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this SecretRotationOracledbCredentials.
+func (mg *SecretRotationOracledbCredentials) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this SecretRotationOracledbCredentials.
+func (mg *SecretRotationOracledbCredentials) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this SecretRotationPostgresCredentials.
+func (mg *SecretRotationPostgresCredentials) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this SecretRotationPostgresCredentials.
+func (mg *SecretRotationPostgresCredentials) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this SecretRotationPostgresCredentials.
+func (mg *SecretRotationPostgresCredentials) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this SecretRotationPostgresCredentials.
+func (mg *SecretRotationPostgresCredentials) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this SecretRotationPostgresCredentials.
+func (mg *SecretRotationPostgresCredentials) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this SecretRotationPostgresCredentials.
+func (mg *SecretRotationPostgresCredentials) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this SecretRotationPostgresCredentials.
+func (mg *SecretRotationPostgresCredentials) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this SecretRotationPostgresCredentials.
+func (mg *SecretRotationPostgresCredentials) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }

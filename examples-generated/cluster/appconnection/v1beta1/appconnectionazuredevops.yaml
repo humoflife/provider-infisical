@@ -1,0 +1,24 @@
+apiVersion: appconnection.infisical.upbound.io/v1beta1
+kind: AppConnectionAzureDevops
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionazuredevops
+  labels:
+    testing.upbound.io/example-name: app_connection_azure_devops_client_secret
+  name: app-connection-azure-devops-client-secret
+spec:
+  forProvider:
+    credentials:
+      clientIdSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      clientSecretSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      organizationName: <azure-devops-organization-name>
+      tenantId: <azure-tenant-id>
+    description: I am a test Azure DevOps app connection using client credentials
+    method: client-secret
+    name: app-connection-azure-devops-client-secret

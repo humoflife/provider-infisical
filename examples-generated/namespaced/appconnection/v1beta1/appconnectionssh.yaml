@@ -1,0 +1,21 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionSsh
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionssh
+  labels:
+    testing.upbound.io/example-name: app-connection-ssh-password
+  name: app-connection-ssh-password
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      host: server.example.com
+      passwordSecretRef:
+        key: example-key
+        name: example-secret
+      port: 22
+      username: <username>
+    description: I am a test app connection
+    method: password
+    name: ssh-password-app-connection

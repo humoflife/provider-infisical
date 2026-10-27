@@ -1,0 +1,38 @@
+apiVersion: identity.infisical.upbound.io/v1beta1
+kind: AwsAuth
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/awsauth
+  labels:
+    testing.upbound.io/example-name: aws-auth
+  name: aws-auth
+spec:
+  forProvider:
+    accessTokenMaxTtl: 2592000
+    accessTokenTrustedIps:
+    - ipAddress: 0.0.0.0/0
+    accessTokenTtl: 2592000
+    allowedAccountIds:
+    - "123456789012"
+    allowedPrincipalArns:
+    - arn:aws:iam::123456789012:role/MyRole
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: machine-identity-1
+    stsEndpoint: https://sts.us-east-1.amazonaws.com/
+
+---
+
+apiVersion: identity.infisical.upbound.io/v1beta1
+kind: Identity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/awsauth
+  labels:
+    testing.upbound.io/example-name: machine-identity-1
+  name: machine-identity-1
+spec:
+  forProvider:
+    name: machine-identity-1
+    orgId: <your-org-id>
+    role: admin

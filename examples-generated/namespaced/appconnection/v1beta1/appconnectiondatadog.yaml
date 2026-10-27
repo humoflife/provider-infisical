@@ -1,0 +1,22 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionDatadog
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectiondatadog
+  labels:
+    testing.upbound.io/example-name: datadog-demo
+  name: datadog-demo
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      apiKeySecretRef:
+        key: example-key
+        name: example-secret
+      applicationKeySecretRef:
+        key: example-key
+        name: example-secret
+      url: https://api.datadoghq.com
+    description: This is a demo Datadog connection.
+    method: api-key
+    name: datadog-demo

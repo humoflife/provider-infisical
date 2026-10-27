@@ -1,0 +1,32 @@
+apiVersion: group.infisical.upbound.io/v1beta1
+kind: GroupMachineIdentity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: group/v1beta1/groupmachineidentity
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    groupIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: identity.infisical.upbound.io/v1beta1
+kind: Identity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: group/v1beta1/groupmachineidentity
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: example-identity
+    orgId: <org-id>
+    role: member

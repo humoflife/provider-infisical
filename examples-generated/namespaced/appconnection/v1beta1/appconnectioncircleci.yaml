@@ -1,0 +1,18 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionCircleci
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectioncircleci
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      apiTokenSecretRef:
+        key: example-key
+        name: example-secret
+    description: I am a test app connection
+    method: api-token
+    name: circleci-connection

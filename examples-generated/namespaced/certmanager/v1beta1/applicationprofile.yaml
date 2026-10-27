@@ -1,0 +1,135 @@
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: ApplicationProfile
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationprofile
+  labels:
+    testing.upbound.io/example-name: platform_web_server
+  name: platform-web-server
+  namespace: default
+spec:
+  forProvider:
+    acmeConfig:
+      skipDnsOwnershipVerification: false
+      skipEabBinding: false
+    apiConfig:
+      autoRenew: true
+      renewBeforeDays: 7
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: platform
+    estConfig:
+      disableBootstrapCaValidation: false
+      passphraseSecretRef:
+        key: example-key
+        name: example-secret
+    profileIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: web_server
+    scepConfig:
+      allowCertBasedRenewal: true
+      challengePasswordSecretRef:
+        key: example-key
+        name: example-secret
+      challengeType: static
+      includeCaCertInResponse: true
+      signRaWithCa: false
+
+---
+
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: Application
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationprofile
+  labels:
+    testing.upbound.io/example-name: platform
+  name: platform
+  namespace: default
+spec:
+  forProvider:
+    name: platform
+
+---
+
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: CertificatePolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationprofile
+  labels:
+    testing.upbound.io/example-name: web_server
+  name: web-server
+  namespace: default
+spec:
+  forProvider:
+    algorithms:
+      keyAlgorithm:
+      - RSA-2048
+      signature:
+      - SHA256-RSA
+    extendedKeyUsages:
+      allowed:
+      - server_auth
+    keyUsages:
+      allowed:
+      - digital_signature
+      - key_encipherment
+    name: web-server-policy
+    subject:
+    - allowed:
+      - '*.example.com'
+      required:
+      - '*.example.com'
+      type: common_name
+    validity:
+      max: 90d
+
+---
+
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: CertificateProfile
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationprofile
+  labels:
+    testing.upbound.io/example-name: web_server
+  name: web-server
+  namespace: default
+spec:
+  forProvider:
+    caId: ${infisical_cert_manager_internal_ca.issuing.id}
+    certificatePolicyIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: web_server
+    defaults:
+      commonName: service.example.com
+      extendedKeyUsages:
+      - server_auth
+      keyAlgorithm: RSA_2048
+      keyUsages:
+      - digital_signature
+      signatureAlgorithm: RSA-SHA256
+      ttlDays: 90
+    issuerType: ca
+    name: web-server
+
+---
+
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: InternalCa
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationprofile
+  labels:
+    testing.upbound.io/example-name: issuing
+  name: issuing
+  namespace: default
+spec:
+  forProvider:
+    commonName: Enterprise Issuing Certificate Authority
+    country: US
+    keyAlgorithm: RSA_2048
+    name: enterprise-issuing-ca
+    organization: Example Corp
+    type: intermediate

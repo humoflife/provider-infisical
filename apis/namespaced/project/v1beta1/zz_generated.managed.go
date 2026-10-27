@@ -208,6 +208,46 @@ func (mg *ProjectIdentity) SetWriteConnectionSecretToReference(r *xpv2.LocalSecr
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
+// GetCondition of this ProjectIdentitySpecificPrivilege.
+func (mg *ProjectIdentitySpecificPrivilege) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this ProjectIdentitySpecificPrivilege.
+func (mg *ProjectIdentitySpecificPrivilege) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this ProjectIdentitySpecificPrivilege.
+func (mg *ProjectIdentitySpecificPrivilege) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this ProjectIdentitySpecificPrivilege.
+func (mg *ProjectIdentitySpecificPrivilege) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this ProjectIdentitySpecificPrivilege.
+func (mg *ProjectIdentitySpecificPrivilege) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this ProjectIdentitySpecificPrivilege.
+func (mg *ProjectIdentitySpecificPrivilege) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this ProjectIdentitySpecificPrivilege.
+func (mg *ProjectIdentitySpecificPrivilege) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this ProjectIdentitySpecificPrivilege.
+func (mg *ProjectIdentitySpecificPrivilege) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this ProjectRole.
 func (mg *ProjectRole) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
@@ -245,6 +285,46 @@ func (mg *ProjectRole) SetProviderConfigReference(r *xpv2.ProviderConfigReferenc
 
 // SetWriteConnectionSecretToReference of this ProjectRole.
 func (mg *ProjectRole) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this ProjectScopedIdentity.
+func (mg *ProjectScopedIdentity) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this ProjectScopedIdentity.
+func (mg *ProjectScopedIdentity) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this ProjectScopedIdentity.
+func (mg *ProjectScopedIdentity) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this ProjectScopedIdentity.
+func (mg *ProjectScopedIdentity) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this ProjectScopedIdentity.
+func (mg *ProjectScopedIdentity) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this ProjectScopedIdentity.
+func (mg *ProjectScopedIdentity) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this ProjectScopedIdentity.
+func (mg *ProjectScopedIdentity) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this ProjectScopedIdentity.
+func (mg *ProjectScopedIdentity) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
@@ -365,5 +445,45 @@ func (mg *SecretApprovalPolicy) SetProviderConfigReference(r *xpv2.ProviderConfi
 
 // SetWriteConnectionSecretToReference of this SecretApprovalPolicy.
 func (mg *SecretApprovalPolicy) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this Webhook.
+func (mg *Webhook) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this Webhook.
+func (mg *Webhook) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this Webhook.
+func (mg *Webhook) GetProviderConfigReference() *xpv2.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this Webhook.
+func (mg *Webhook) GetWriteConnectionSecretToReference() *xpv2.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this Webhook.
+func (mg *Webhook) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this Webhook.
+func (mg *Webhook) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this Webhook.
+func (mg *Webhook) SetProviderConfigReference(r *xpv2.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this Webhook.
+func (mg *Webhook) SetWriteConnectionSecretToReference(r *xpv2.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }

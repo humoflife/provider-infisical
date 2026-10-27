@@ -1,0 +1,20 @@
+apiVersion: appconnection.infisical.upbound.io/v1beta1
+kind: AppConnectionDatabricks
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectiondatabricks
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    credentials:
+      clientId: your-databricks-client-id
+      clientSecretSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      workspaceUrl: https://your-workspace.cloud.databricks.com
+    description: I am a test app connection
+    method: service-principal
+    name: databricks-connection

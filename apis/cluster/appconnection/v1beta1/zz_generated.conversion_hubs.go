@@ -7,4 +7,100 @@
 package v1beta1
 
 // Hub marks this type as a conversion hub.
+func (tr *AppConnectionAws) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionAzureAppConfiguration) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *AppConnectionAzureClientSecrets) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionAzureDevops) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionAzureKeyVault) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionBitbucket) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionChef) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionCircleci) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionCloudflare) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionDatabricks) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionDatadog) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionDigicert) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionF5BigIp) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionFlyio) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionGcp) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionGithub) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionGitlab) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionHashicorpVault) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionKempLoadmaster) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionLdap) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionLitellm) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionMssql) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionMysql) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionNetscaler) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionNutanixPrismCentral) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionOnePassword) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionOracledb) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionPostgres) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionRender) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionSpacelift) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionSsh) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionSupabase) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *AppConnectionWinrm) Hub() {}

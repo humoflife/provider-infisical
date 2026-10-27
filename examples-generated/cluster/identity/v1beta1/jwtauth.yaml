@@ -1,0 +1,52 @@
+apiVersion: identity.infisical.upbound.io/v1beta1
+kind: JwtAuth
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/jwtauth
+  labels:
+    testing.upbound.io/example-name: jwt-auth-jwks-1
+  name: jwt-auth-jwks-1
+spec:
+  forProvider:
+    boundAudiences:
+    - my-audience
+    boundIssuer: https://example.com
+    boundSubject: my-subject
+    configurationType: jwks
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: machine-identity-jwks-1
+    jwksCaCert: ${file("public.pem")}
+    jwksUrl: https://example.com/.well-known/jwks.json
+
+---
+
+apiVersion: identity.infisical.upbound.io/v1beta1
+kind: Identity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/jwtauth
+  labels:
+    testing.upbound.io/example-name: machine-identity-jwks-1
+  name: machine-identity-jwks-1
+spec:
+  forProvider:
+    name: machine-identity-jwks-1
+    orgId: <org-id>
+    role: admin
+
+---
+
+apiVersion: identity.infisical.upbound.io/v1beta1
+kind: Identity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/jwtauth
+  labels:
+    testing.upbound.io/example-name: machine-identity-static-1
+  name: machine-identity-static-1
+spec:
+  forProvider:
+    name: machine-identity-static-1
+    orgId: <org-id>
+    role: admin
