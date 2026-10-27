@@ -99,7 +99,7 @@ stringData:
 #### 2. Create a ProviderConfig
 
 ```yaml
-apiVersion: infisical.crossplane.io/v1beta1
+apiVersion: infisical.upbound.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: default
@@ -114,6 +114,48 @@ spec:
 ```
 
 Now you can use `providerConfigRef.name: default` in your managed resources.
+
+The cluster scoped managed resources are in the `*.infisical.upbound.io` API
+groups, for example `project.infisical.upbound.io/v1beta1`.
+
+#### Namespaced managed resources
+
+Every kind is also available as a namespaced managed resource in the
+`*.infisical.m.upbound.io` API groups, for example
+`project.infisical.m.upbound.io/v1beta1`. A namespaced managed resource
+references a `ProviderConfig` in its own namespace, which reads the credentials
+Secret from that namespace, or a cluster scoped `ClusterProviderConfig`:
+
+```yaml
+apiVersion: infisical.m.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: default
+  namespace: team-a
+spec:
+  host: https://app.infisical.com
+  credentials:
+    source: Secret
+    secretRef:
+      name: example-creds
+      key: credentials
+---
+apiVersion: project.infisical.m.upbound.io/v1beta1
+kind: Project
+metadata:
+  name: example
+  namespace: team-a
+spec:
+  forProvider:
+    name: Example
+    slug: example
+    type: secret-manager
+  providerConfigRef:
+    kind: ProviderConfig
+    name: default
+```
+
+See `examples/namespaced/providerconfig/` for a `ClusterProviderConfig`.
 
 You can see the API reference [here](https://doc.crds.dev/github.com/infisical/provider-infisical).
 

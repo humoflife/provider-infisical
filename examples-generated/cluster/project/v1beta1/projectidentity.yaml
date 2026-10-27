@@ -1,0 +1,33 @@
+apiVersion: project.infisical.upbound.io/v1beta1
+kind: ProjectIdentity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: project/v1beta1/projectidentity
+  labels:
+    testing.upbound.io/example-name: test-identity
+  name: test-identity
+spec:
+  forProvider:
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    roles:
+    - roleSlug: admin
+
+---
+
+apiVersion: project.infisical.upbound.io/v1beta1
+kind: Project
+metadata:
+  annotations:
+    meta.upbound.io/example-id: project/v1beta1/projectidentity
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: example
+    slug: example
