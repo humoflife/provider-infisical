@@ -29,7 +29,7 @@ metadata:
   name: aws-auth
 spec:
   forProvider:
-    accessTokenMaxTtl: ${2592000 * 2}
+    accessTokenMaxTtl: 5184000
     accessTokenNumUsesLimit: 3
     accessTokenTtl: 2592000
     allowedAccountIds:
@@ -124,7 +124,7 @@ metadata:
   name: ua-auth
 spec:
   forProvider:
-    accessTokenMaxTtl: ${2592000 * 2}
+    accessTokenMaxTtl: 5184000
     accessTokenNumUsesLimit: 3
     accessTokenTtl: 2592000
     identityIdSelector:

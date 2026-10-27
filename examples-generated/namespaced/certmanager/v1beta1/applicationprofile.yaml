@@ -64,15 +64,15 @@ metadata:
 spec:
   forProvider:
     algorithms:
-    - keyAlgorithm:
+      keyAlgorithm:
       - RSA-2048
       signature:
       - SHA256-RSA
     extendedKeyUsages:
-    - allowed:
+      allowed:
       - server_auth
     keyUsages:
-    - allowed:
+      allowed:
       - digital_signature
       - key_encipherment
     name: web-server-policy
@@ -83,7 +83,7 @@ spec:
       - '*.example.com'
       type: common_name
     validity:
-    - max: 90d
+      max: 90d
 
 ---
 
@@ -103,7 +103,7 @@ spec:
       matchLabels:
         testing.upbound.io/example-name: web_server
     defaults:
-    - commonName: service.example.com
+      commonName: service.example.com
       extendedKeyUsages:
       - server_auth
       keyAlgorithm: RSA_2048

@@ -27,7 +27,7 @@ spec:
         key: example-key
         name: example-secret
         namespace: upbound-system
-      port: "5431"
+      port: 5431
       renewStatement: |
         ALTER ROLE "{{username}}" VALID UNTIL "{{expiration}}";
       revocationStatement: |

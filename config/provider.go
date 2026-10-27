@@ -93,6 +93,9 @@ func newProvider(rootGroup string, opts ...ujconfig.ProviderOption) *ujconfig.Pr
 	}
 
 	pc.ConfigureResources()
+	if err := normalizeExamples(pc); err != nil {
+		panic(err)
+	}
 	return pc
 }
 

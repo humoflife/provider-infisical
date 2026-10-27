@@ -13,29 +13,12 @@ import (
 	fwresource "github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"github.com/pkg/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
-	"sigs.k8s.io/yaml"
 
 	apisCluster "github.com/infisical/provider-infisical/apis/cluster"
 	apisNamespaced "github.com/infisical/provider-infisical/apis/namespaced"
 )
-
-// knownBrokenExamples are generated examples that do not match their CRD,
-// because the example in the Terraform docs or the upjet example generator is
-// wrong, not the CRD: the generator writes nested objects as lists, and some
-// Terraform docs write numbers as strings.
-// The key is "<short group>/<kind>". Generated example files also hold the
-// examples of the resources they reference, so they are skipped by kind.
-var knownBrokenExamples = map[string]bool{
-	"certmanager/CertificatePolicy":  true,
-	"certmanager/CertificateProfile": true,
-	"dynamicsecret/SqlDatabase":      true,
-	"identity/AwsAuth":               true,
-	"identity/UniversalAuth":         true,
-	"project/Project":                true,
-}
 
 // TestExamplesMatchTerraformSchema decodes every generated example into its
 // API type and converts its parameters to a value of the schema of the
@@ -65,15 +48,6 @@ func TestExamplesMatchTerraformSchema(t *testing.T) {
 				return err
 			}
 			for i, document := range strings.Split(string(raw), "\n---\n") {
-				typeMeta := &metav1.TypeMeta{}
-				if err := yaml.Unmarshal([]byte(document), typeMeta); err != nil {
-					t.Errorf("%s/%s, document %d: cannot read the kind: %v", scope, relativePath, i, err)
-					continue
-				}
-				shortGroup, _, _ := strings.Cut(typeMeta.GroupVersionKind().Group, ".")
-				if knownBrokenExamples[shortGroup+"/"+typeMeta.Kind] {
-					continue
-				}
 				object, _, err := decoder.Decode([]byte(document), nil, nil)
 				if err != nil {
 					t.Errorf("%s/%s, document %d: cannot decode: %v", scope, relativePath, i, err)

@@ -10,7 +10,7 @@ metadata:
 spec:
   forProvider:
     algorithms:
-    - keyAlgorithm:
+      keyAlgorithm:
       - RSA-2048
       - RSA-3072
       - ECDSA-P256
@@ -20,14 +20,14 @@ spec:
       - SHA256-ECDSA
       - SHA384-ECDSA
     basicConstraints:
-    - isCa: denied
+      isCa: denied
     description: Policy for web server certificates
     extendedKeyUsages:
-    - allowed:
+      allowed:
       - server_auth
       - client_auth
     keyUsages:
-    - allowed:
+      allowed:
       - digital_signature
       - key_encipherment
     name: web-server-policy
@@ -59,4 +59,4 @@ spec:
       - US
       type: country
     validity:
-    - max: 90d
+      max: 90d
