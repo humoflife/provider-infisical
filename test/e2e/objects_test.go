@@ -133,7 +133,7 @@ var objects = []object{
 		update: updateOf(`{"description":"updated by e2e"}`, "status.atProvider.description", `"updated by e2e"`),
 	},
 	{
-		file: "secretsyncgithub", name: "secret-sync-github", shortGroup: secretSyncGroup, kind: "SecretSyncGithub",
+		file: githubSecretSyncFile, name: "secret-sync-github", shortGroup: secretSyncGroup, kind: "SecretSyncGithub",
 		update: updateOf(`{"syncOptions":{"keySchema":"E2E_UPDATED_{{secretKey}}"}}`, "status.atProvider.syncOptions.keySchema", `"E2E_UPDATED_{{secretKey}}"`),
 	},
 	{
@@ -153,6 +153,22 @@ func checkFixtures() []string {
 		}
 	}
 	return problems
+}
+
+// githubSecretSyncFile is the fixture of the GitHub secret sync. Its test only
+// runs when the optional GitHub settings are set.
+const githubSecretSyncFile = "secretsyncgithub"
+
+// withoutObject returns the test objects without the object of the fixture
+// file.
+func withoutObject(all []object, file string) []object {
+	kept := make([]object, 0, len(all))
+	for _, o := range all {
+		if o.file != file {
+			kept = append(kept, o)
+		}
+	}
+	return kept
 }
 
 // objectByFile returns the test object of the fixture file.
