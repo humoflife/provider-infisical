@@ -27,7 +27,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
 
-	"terraform-provider-infisical/xpprovider"
+	"github.com/humoflife/terraform-provider-infisical/xpprovider"
 
 	apisCluster "github.com/infisical/provider-infisical/apis/cluster"
 	apisNamespaced "github.com/infisical/provider-infisical/apis/namespaced"

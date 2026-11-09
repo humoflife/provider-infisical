@@ -246,8 +246,8 @@ github.com/hashicorp/terraform-svchost v0.1.1 h1:EZZimZ1GxdqFRinZ1tpJwVxxt49xc/S
 github.com/hashicorp/terraform-svchost v0.1.1/go.mod h1:mNsjQfZyf/Jhz35v6/0LWcv26+X7JPS+buii2c9/ctc=
 github.com/hashicorp/yamux v0.1.2 h1:XtB8kyFOyHXYVFnwT5C3+Bdo8gArse7j2AQ0DA0Uey8=
 github.com/hashicorp/yamux v0.1.2/go.mod h1:C+zze2n6e/7wshOZep2A70/aQU6QBRWJO/G6FT1wIns=
-github.com/humoflife/terraform-provider-infisical v0.20.6-xp.1 h1:T9V5fXzxd5dFwWI41E2cqXTBKK/hYlz47hhnglPeHns=
-github.com/humoflife/terraform-provider-infisical v0.20.6-xp.1/go.mod h1:rGO0HYfIkLWRVUHJ+iI36LeA5Mh3joGCu9QXFKSmq+Y=
+github.com/humoflife/terraform-provider-infisical v0.20.6-xp.2 h1:gyT+CGBM0EIRUQ7jlrYHwJIUubhtqc0atvg2QMH+DxM=
+github.com/humoflife/terraform-provider-infisical v0.20.6-xp.2/go.mod h1:oA2hlOHzV86NdB4vTQrfSTNShHlUULcsHa2jmGzeT1o=
 github.com/iancoleman/strcase v0.3.0 h1:nTXanmYxhfFAMjZL34Ov6gkzEsSJZ5DbhxWjvSASxEI=
 github.com/iancoleman/strcase v0.3.0/go.mod h1:iwCmte+B7n89clKwxIoIXy/HfoL7AsD47ZCWhYzw7ho=
 github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=

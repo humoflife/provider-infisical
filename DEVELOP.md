@@ -58,17 +58,21 @@ The example adds `infisical_secret_sync_aws_parameter_store`.
 ## Update the Terraform provider
 
 The provider runs the Terraform provider in-process (no-fork): it imports the
-Terraform Plugin Framework provider as the Go module
-`terraform-provider-infisical`. The provider code of that module is internal,
-so `go.mod` replaces it with the fork `github.com/humoflife/terraform-provider-infisical`,
-which adds the exported package `xpprovider` on the branch `xpprovider`. The
-fork tags are named after the release they are based on, for example
-`v0.20.6-xp.1`.
+Terraform Plugin Framework provider from the fork
+`github.com/humoflife/terraform-provider-infisical`. The provider code of the
+upstream module is internal, so the fork adds the exported package `xpprovider`
+on the branch `xpprovider` and declares the fully qualified module path
+`github.com/humoflife/terraform-provider-infisical` (upstream declares
+`terraform-provider-infisical`, which makes `go mod verify` fail with
+`missing ziphash`). The fork tags are named after the release they are based
+on, for example `v0.20.6-xp.2`.
 
 1. Set `TERRAFORM_PROVIDER_VERSION` in the `Makefile`. `make generate` takes
    the schema and the docs from this release.
-2. Rebase the `xpprovider` branch of the fork on the same release tag, tag it,
-   and point the `replace` in `go.mod` to that tag. Then run `go mod tidy`.
+2. Rebase the `xpprovider` branch of the fork on the same release tag, keep
+   the fully qualified module path, tag it, and require that tag in `go.mod`
+   (`go get github.com/humoflife/terraform-provider-infisical@<tag>`). Then run
+   `go mod tidy`.
 3. Run `make generate`.
 4. Look at the changes in `package/crds/`. If a field of an existing kind is
    removed or changes its type, that is a breaking change for users.

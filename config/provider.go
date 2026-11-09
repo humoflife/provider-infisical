@@ -8,7 +8,7 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
-	"terraform-provider-infisical/xpprovider"
+	"github.com/humoflife/terraform-provider-infisical/xpprovider"
 
 	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 
