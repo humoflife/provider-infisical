@@ -33,8 +33,9 @@ fi
 REQUIRED_ENV=(
   CROSSPLANE_VERSION PROVIDER_IMAGE PROVIDER_XPKG
   INFISICAL_HOST INFISICAL_CLIENT_ID INFISICAL_CLIENT_SECRET INFISICAL_ORG_ID INFISICAL_USER_EMAIL
-  INFISICAL_GITHUB_CONNECTION_ID INFISICAL_GITHUB_REPO_OWNER INFISICAL_GITHUB_REPO_NAME
 )
+# Optional: without all of them, the GitHub secret sync is not tested.
+OPTIONAL_GITHUB_ENV=(INFISICAL_GITHUB_CONNECTION_ID INFISICAL_GITHUB_REPO_OWNER INFISICAL_GITHUB_REPO_NAME)
 missing=()
 for name in "${REQUIRED_ENV[@]}"; do
   [[ -n "${!name:-}" ]] || missing+=("${name}")
@@ -46,6 +47,17 @@ if (( ${#missing[@]} > 0 )); then
   fi
   echo "ERROR: ${message}" >&2
   exit 1
+fi
+missing_github=()
+for name in "${OPTIONAL_GITHUB_ENV[@]}"; do
+  [[ -n "${!name:-}" ]] || missing_github+=("${name}")
+done
+if (( ${#missing_github[@]} > 0 )); then
+  message="${missing_github[*]} not set: the GitHub secret sync is not tested. See test/e2e/README.md."
+  if [[ "${CI}" == "true" ]]; then
+    echo "::warning title=E2E GitHub secret sync not tested::${message}"
+  fi
+  echo "WARNING: ${message}" >&2
 fi
 
 KIND="${KIND:-kind}"

@@ -77,8 +77,8 @@ var settings struct {
 var kube client.Client
 
 func TestMain(m *testing.M) {
-	// run.sh also checks these, and the INFISICAL_HOST, INFISICAL_CLIENT_ID and
-	// INFISICAL_CLIENT_SECRET for the ProviderConfig.
+	// run.sh also checks these required settings, and the INFISICAL_HOST,
+	// INFISICAL_CLIENT_ID and INFISICAL_CLIENT_SECRET for the ProviderConfig.
 	var missing []string
 	get := func(name string) string {
 		v := os.Getenv(name)
@@ -90,12 +90,18 @@ func TestMain(m *testing.M) {
 	settings.runID = get("E2E_RUN_ID")
 	settings.orgID = get("INFISICAL_ORG_ID")
 	settings.userEmail = get("INFISICAL_USER_EMAIL")
-	settings.githubConnectionID = get("INFISICAL_GITHUB_CONNECTION_ID")
-	settings.githubRepoOwner = get("INFISICAL_GITHUB_REPO_OWNER")
-	settings.githubRepoName = get("INFISICAL_GITHUB_REPO_NAME")
 	if len(missing) > 0 {
 		fmt.Fprintf(os.Stderr, "missing required environment variables: %s\n", strings.Join(missing, ", "))
 		os.Exit(1)
+	}
+	// The GitHub settings are optional. Without all of them, the test of the
+	// GitHub secret sync does not run.
+	settings.githubConnectionID = os.Getenv("INFISICAL_GITHUB_CONNECTION_ID")
+	settings.githubRepoOwner = os.Getenv("INFISICAL_GITHUB_REPO_OWNER")
+	settings.githubRepoName = os.Getenv("INFISICAL_GITHUB_REPO_NAME")
+	if settings.githubConnectionID == "" || settings.githubRepoOwner == "" || settings.githubRepoName == "" {
+		fmt.Fprintln(os.Stderr, "INFISICAL_GITHUB_CONNECTION_ID, INFISICAL_GITHUB_REPO_OWNER or INFISICAL_GITHUB_REPO_NAME is not set: the GitHub secret sync is not tested")
+		objects = withoutObject(objects, githubSecretSyncFile)
 	}
 	if problems := checkFixtures(); len(problems) > 0 {
 		fmt.Fprintf(os.Stderr, "the test fixtures do not match the test objects in objects_test.go:\n  %s\n", strings.Join(problems, "\n  "))
