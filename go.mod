@@ -121,6 +121,7 @@ require (
 	github.com/hashicorp/terraform-registry-address v0.4.0 // indirect
 	github.com/hashicorp/terraform-svchost v0.1.1 // indirect
 	github.com/hashicorp/yamux v0.1.2 // indirect
+	github.com/humoflife/terraform-provider-infisical v0.20.6-xp.2
 	github.com/iancoleman/strcase v0.3.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -201,9 +202,6 @@ require (
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.3.3 // indirect
-	terraform-provider-infisical v0.20.6
 )
 
 tool golang.org/x/tools/cmd/goimports
-
-replace terraform-provider-infisical => github.com/humoflife/terraform-provider-infisical v0.20.6-xp.1

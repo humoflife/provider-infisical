@@ -22,7 +22,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
-	"terraform-provider-infisical/xpprovider"
+	"github.com/humoflife/terraform-provider-infisical/xpprovider"
 
 	clusterproject "github.com/infisical/provider-infisical/apis/cluster/project/v1beta1"
 	clusterv1beta1 "github.com/infisical/provider-infisical/apis/cluster/v1beta1"
