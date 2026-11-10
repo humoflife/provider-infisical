@@ -25,6 +25,7 @@ ID: delete the Infisical resources with that ID in their name by hand.
 | `INFISICAL_GITHUB_CONNECTION_ID` | `INFISICAL_GITHUB_CONNECTION_ID` | no | ID of an existing GitHub App Connection in the organization. |
 | `INFISICAL_GITHUB_REPO_OWNER` | `INFISICAL_GITHUB_REPO_OWNER` | no | Owner of the GitHub repository that the GitHub secret sync writes to. |
 | `INFISICAL_GITHUB_REPO_NAME` | `INFISICAL_GITHUB_REPO_NAME` | no | Name of that repository. Use a repository for tests only: the sync writes secrets to it. |
+| `INFISICAL_E2E_PAID_PLAN` | `INFISICAL_E2E_PAID_PLAN` | no | Set to `true` when the organization has a paid Infisical plan, to also test the kinds that need one. |
 
 The tests create and delete projects, environments, folders, secrets, machine
 identities and their auth methods, groups, project roles and memberships,
@@ -34,6 +35,14 @@ so the machine identity needs permission to manage these in the organization.
 The three GitHub settings are optional. Unless all three are set, the
 `SecretSyncGithub` test does not run, and the run prints a warning. The other
 tests run as usual.
+
+Some kinds need a paid Infisical plan. On the free plan, Infisical rejects
+groups, secret approval policies and project templates, and allows three
+environments per project, which a new project already has. Unless
+`INFISICAL_E2E_PAID_PLAN` is `true`, the `Group`, `ProjectGroup`,
+`ProjectEnvironment`, `SecretApprovalPolicy` and `ProjectTemplate` tests do not
+run, and the run prints a warning. To see what the plan of an organization
+allows, call `GET /api/v1/organizations/<org ID>/plan`.
 
 The workflow takes the settings from the repository secrets in the last
 column. Note that the host comes from the secret `E2E_INFISICAL_HOST`.
