@@ -13,10 +13,50 @@ import (
 	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
+type AppConnectionAzureClientSecretsCredentialsInitParameters struct {
+
+	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	// The Azure application (client) ID. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	ClientIDSecretRef v2.LocalSecretKeySelector `json:"clientIdSecretRef" tf:"-"`
+
+	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	// The Azure client secret. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	ClientSecretSecretRef v2.LocalSecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
+
+	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	// The Azure Active Directory (AAD) tenant ID. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	TenantID *string `json:"tenantId,omitempty" tf:"tenant_id,omitempty"`
+}
+
+type AppConnectionAzureClientSecretsCredentialsObservation struct {
+
+	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	// The Azure Active Directory (AAD) tenant ID. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	TenantID *string `json:"tenantId,omitempty" tf:"tenant_id,omitempty"`
+}
+
+type AppConnectionAzureClientSecretsCredentialsParameters struct {
+
+	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	// The Azure application (client) ID. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	// +kubebuilder:validation:Optional
+	ClientIDSecretRef v2.LocalSecretKeySelector `json:"clientIdSecretRef" tf:"-"`
+
+	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	// The Azure client secret. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	// +kubebuilder:validation:Optional
+	ClientSecretSecretRef v2.LocalSecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
+
+	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	// The Azure Active Directory (AAD) tenant ID. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
+	// +kubebuilder:validation:Optional
+	TenantID *string `json:"tenantId" tf:"tenant_id,omitempty"`
+}
+
 type AppConnectionAzureClientSecretsInitParameters struct {
 
 	// (Attributes) The credentials for the Azure Client Secrets App Connection (see below for nested schema)
-	Credentials *CredentialsInitParameters `json:"credentials,omitempty" tf:"credentials,omitempty"`
+	Credentials *AppConnectionAzureClientSecretsCredentialsInitParameters `json:"credentials,omitempty" tf:"credentials,omitempty"`
 
 	// (String) An optional description for the Azure Client Secrets App Connection.
 	// An optional description for the Azure Client Secrets App Connection.
@@ -47,7 +87,7 @@ type AppConnectionAzureClientSecretsInitParameters struct {
 type AppConnectionAzureClientSecretsObservation struct {
 
 	// (Attributes) The credentials for the Azure Client Secrets App Connection (see below for nested schema)
-	Credentials *CredentialsObservation `json:"credentials,omitempty" tf:"credentials,omitempty"`
+	Credentials *AppConnectionAzureClientSecretsCredentialsObservation `json:"credentials,omitempty" tf:"credentials,omitempty"`
 
 	// (String) The hash of the Azure Client Secrets App Connection credentials
 	// The hash of the Azure Client Secrets App Connection credentials
@@ -77,7 +117,7 @@ type AppConnectionAzureClientSecretsParameters struct {
 
 	// (Attributes) The credentials for the Azure Client Secrets App Connection (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	Credentials *CredentialsParameters `json:"credentials,omitempty" tf:"credentials,omitempty"`
+	Credentials *AppConnectionAzureClientSecretsCredentialsParameters `json:"credentials,omitempty" tf:"credentials,omitempty"`
 
 	// (String) An optional description for the Azure Client Secrets App Connection.
 	// An optional description for the Azure Client Secrets App Connection.
@@ -107,46 +147,6 @@ type AppConnectionAzureClientSecretsParameters struct {
 	// Selector for a Project in project to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v2.NamespacedSelector `json:"projectIdSelector,omitempty" tf:"-"`
-}
-
-type CredentialsInitParameters struct {
-
-	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	// The Azure application (client) ID. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	ClientIDSecretRef v2.LocalSecretKeySelector `json:"clientIdSecretRef" tf:"-"`
-
-	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	// The Azure client secret. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	ClientSecretSecretRef v2.LocalSecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
-
-	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	// The Azure Active Directory (AAD) tenant ID. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	TenantID *string `json:"tenantId,omitempty" tf:"tenant_id,omitempty"`
-}
-
-type CredentialsObservation struct {
-
-	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	// The Azure Active Directory (AAD) tenant ID. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	TenantID *string `json:"tenantId,omitempty" tf:"tenant_id,omitempty"`
-}
-
-type CredentialsParameters struct {
-
-	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	// The Azure application (client) ID. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	// +kubebuilder:validation:Optional
-	ClientIDSecretRef v2.LocalSecretKeySelector `json:"clientIdSecretRef" tf:"-"`
-
-	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	// The Azure client secret. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	// +kubebuilder:validation:Optional
-	ClientSecretSecretRef v2.LocalSecretKeySelector `json:"clientSecretSecretRef" tf:"-"`
-
-	// secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	// The Azure Active Directory (AAD) tenant ID. Required for client-secret method. For more details, refer to the documentation here infisical.com/docs/integrations/app-connections/azure-client-secrets
-	// +kubebuilder:validation:Optional
-	TenantID *string `json:"tenantId" tf:"tenant_id,omitempty"`
 }
 
 // AppConnectionAzureClientSecretsSpec defines the desired state of AppConnectionAzureClientSecrets

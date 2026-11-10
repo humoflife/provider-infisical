@@ -1,0 +1,33 @@
+apiVersion: certificatesync.infisical.upbound.io/v1beta1
+kind: WindowsServer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certificatesync/v1beta1/windowsserver
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    certificateFilters:
+      certificateOrderIds:
+      - ${infisical_cert_manager_certificate.example.order_id}
+    connectionId: <winrm-app-connection-id>
+    description: Demo of Windows Server certificate sync
+    destinationConfig:
+      destinationPath: C:\certs
+    exportPasswordSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    name: windows-server-certificate-sync-demo
+    syncOptions:
+      certificateNameSchema: '{{commonName}}-{{shortCertificateId}}'
+      exportFormat: pkcs12
+      fileAccessRules:
+      - access: read
+        identity: CORP\svc-iis
+      - access: full-control
+        identity: BUILTIN\Administrators

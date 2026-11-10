@@ -1,0 +1,19 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionHashicorpVault
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionhashicorpvault
+  labels:
+    testing.upbound.io/example-name: app-connection-vault-access-token
+  name: app-connection-vault-access-token
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      accessTokenSecretRef:
+        key: example-key
+        name: example-secret
+      instanceUrl: https://vault.example.com
+    description: I am a test app connection
+    method: access-token
+    name: vault-access-token-app-connection

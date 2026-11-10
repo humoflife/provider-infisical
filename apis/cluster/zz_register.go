@@ -11,8 +11,15 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 
 	v1beta1 "github.com/infisical/provider-infisical/apis/cluster/appconnection/v1beta1"
+	v1beta1certificatesync "github.com/infisical/provider-infisical/apis/cluster/certificatesync/v1beta1"
+	v1beta1certmanager "github.com/infisical/provider-infisical/apis/cluster/certmanager/v1beta1"
+	v1beta1dynamicsecret "github.com/infisical/provider-infisical/apis/cluster/dynamicsecret/v1beta1"
+	v1beta1gateway "github.com/infisical/provider-infisical/apis/cluster/gateway/v1beta1"
 	v1beta1group "github.com/infisical/provider-infisical/apis/cluster/group/v1beta1"
 	v1beta1identity "github.com/infisical/provider-infisical/apis/cluster/identity/v1beta1"
+	v1beta1integration "github.com/infisical/provider-infisical/apis/cluster/integration/v1beta1"
+	v1beta1kms "github.com/infisical/provider-infisical/apis/cluster/kms/v1beta1"
+	v1beta1organization "github.com/infisical/provider-infisical/apis/cluster/organization/v1beta1"
 	v1beta1project "github.com/infisical/provider-infisical/apis/cluster/project/v1beta1"
 	v1beta1secret "github.com/infisical/provider-infisical/apis/cluster/secret/v1beta1"
 	v1beta1secretrotation "github.com/infisical/provider-infisical/apis/cluster/secretrotation/v1beta1"
@@ -25,8 +32,15 @@ func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
 	AddToSchemes = append(AddToSchemes,
 		v1beta1.SchemeBuilder.AddToScheme,
+		v1beta1certificatesync.SchemeBuilder.AddToScheme,
+		v1beta1certmanager.SchemeBuilder.AddToScheme,
+		v1beta1dynamicsecret.SchemeBuilder.AddToScheme,
+		v1beta1gateway.SchemeBuilder.AddToScheme,
 		v1beta1group.SchemeBuilder.AddToScheme,
 		v1beta1identity.SchemeBuilder.AddToScheme,
+		v1beta1integration.SchemeBuilder.AddToScheme,
+		v1beta1kms.SchemeBuilder.AddToScheme,
+		v1beta1organization.SchemeBuilder.AddToScheme,
 		v1beta1project.SchemeBuilder.AddToScheme,
 		v1beta1secret.SchemeBuilder.AddToScheme,
 		v1beta1secretrotation.SchemeBuilder.AddToScheme,

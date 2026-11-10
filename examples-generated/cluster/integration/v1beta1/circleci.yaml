@@ -1,0 +1,21 @@
+apiVersion: integration.infisical.upbound.io/v1beta1
+kind: Circleci
+metadata:
+  annotations:
+    meta.upbound.io/example-id: integration/v1beta1/circleci
+  labels:
+    testing.upbound.io/example-name: circleci-integration
+  name: circleci-integration
+spec:
+  forProvider:
+    circleciOrgSlug: <your-circleci-org-slug>
+    circleciProjectId: <your-circleci-project-id>
+    circleciTokenSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    environment: dev
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    secretPath: /test-folder

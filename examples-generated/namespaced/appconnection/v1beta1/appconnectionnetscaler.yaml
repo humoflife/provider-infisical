@@ -1,0 +1,22 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionNetscaler
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionnetscaler
+  labels:
+    testing.upbound.io/example-name: app-connection-netscaler
+  name: app-connection-netscaler
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      hostname: netscaler.example.com
+      passwordSecretRef:
+        key: example-key
+        name: example-secret
+      port: 443
+      sslRejectUnauthorized: true
+      username: <username>
+    description: I am a test app connection
+    method: basic-auth
+    name: netscaler-app-connection

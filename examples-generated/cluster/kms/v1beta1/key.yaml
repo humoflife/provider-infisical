@@ -1,0 +1,17 @@
+apiVersion: kms.infisical.upbound.io/v1beta1
+kind: Key
+metadata:
+  annotations:
+    meta.upbound.io/example-id: kms/v1beta1/key
+  labels:
+    testing.upbound.io/example-name: encryption_key
+  name: encryption-key
+spec:
+  forProvider:
+    description: KMS key for encrypting sensitive data
+    encryptionAlgorithm: aes-256-gcm
+    keyUsage: encrypt-decrypt
+    name: my-encryption-key
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

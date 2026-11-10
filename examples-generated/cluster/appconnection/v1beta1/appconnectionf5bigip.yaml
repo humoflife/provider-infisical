@@ -1,0 +1,22 @@
+apiVersion: appconnection.infisical.upbound.io/v1beta1
+kind: AppConnectionF5BigIp
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionf5bigip
+  labels:
+    testing.upbound.io/example-name: app-connection-f5-big-ip
+  name: app-connection-f5-big-ip
+spec:
+  forProvider:
+    credentials:
+      hostname: bigip.example.com
+      passwordSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      port: 443
+      sslRejectUnauthorized: true
+      username: <username>
+    description: I am a test app connection
+    method: basic-auth
+    name: f5-big-ip-app-connection

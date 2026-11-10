@@ -1,0 +1,29 @@
+apiVersion: certificatesync.infisical.m.upbound.io/v1beta1
+kind: AzureKeyVault
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certificatesync/v1beta1/azurekeyvault
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: default
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    certificateFilters:
+      certificateOrderIds:
+      - ${infisical_cert_manager_certificate.example.order_id}
+    connectionIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    description: Demo of Azure Key Vault certificate sync
+    destinationConfig:
+      vaultBaseUrl: https://my-vault.vault.azure.net
+    name: azure-key-vault-certificate-sync-demo
+    syncOptions:
+      canRemoveCertificates: true
+      certificateNameSchema: infisical-{{certificateId}}
+      enableVersioning: true
+      includeRootCa: false

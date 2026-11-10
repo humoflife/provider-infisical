@@ -1,0 +1,24 @@
+apiVersion: certificatesync.infisical.upbound.io/v1beta1
+kind: NutanixPrismCentral
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certificatesync/v1beta1/nutanixprismcentral
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    certificateFilters:
+      certificateOrderIds:
+      - ${infisical_cert_manager_certificate.example.order_id}
+    connectionIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    description: Demo of Nutanix Prism Central certificate sync
+    destinationConfig:
+      clusterId: <cluster-id>
+      clusterName: <cluster-name>
+    name: nutanix-prism-central-certificate-sync-demo

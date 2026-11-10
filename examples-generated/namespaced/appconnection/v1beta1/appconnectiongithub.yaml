@@ -1,0 +1,18 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionGithub
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectiongithub
+  labels:
+    testing.upbound.io/example-name: github_connection
+  name: github-connection
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      personalAccessTokenSecretRef:
+        key: example-key
+        name: example-secret
+    description: GitHub connection for Actions secrets sync
+    method: pat
+    name: github-connection

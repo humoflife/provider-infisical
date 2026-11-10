@@ -1,0 +1,79 @@
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: ApplicationUser
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationuser
+  labels:
+    testing.upbound.io/example-name: platform_admin
+  name: platform-admin
+  namespace: default
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: platform
+    email: admin@example.com
+    role: admin
+
+---
+
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: Application
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationuser
+  labels:
+    testing.upbound.io/example-name: platform
+  name: platform
+  namespace: default
+spec:
+  forProvider:
+    name: platform
+
+---
+
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationuser
+  labels:
+    testing.upbound.io/example-name: admin
+  name: admin
+  namespace: default
+spec:
+  forProvider:
+    email: admin@example.com
+    role: member
+
+---
+
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationuser
+  labels:
+    testing.upbound.io/example-name: auditor
+  name: auditor
+  namespace: default
+spec:
+  forProvider:
+    email: auditor@example.com
+    role: member
+
+---
+
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationuser
+  labels:
+    testing.upbound.io/example-name: operator
+  name: operator
+  namespace: default
+spec:
+  forProvider:
+    email: operator@example.com
+    role: member

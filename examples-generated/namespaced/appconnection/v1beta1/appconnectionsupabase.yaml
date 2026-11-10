@@ -1,0 +1,19 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionSupabase
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionsupabase
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      accessKeySecretRef:
+        key: example-key
+        name: example-secret
+      instanceUrl: <your-supabase-instance-url>
+    description: I am a test app connection
+    method: access-token
+    name: supabase-connection

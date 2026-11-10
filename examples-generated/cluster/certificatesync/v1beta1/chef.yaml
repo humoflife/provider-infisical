@@ -1,0 +1,33 @@
+apiVersion: certificatesync.infisical.upbound.io/v1beta1
+kind: Chef
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certificatesync/v1beta1/chef
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    certificateFilters:
+      certificateOrderIds:
+      - ${infisical_cert_manager_certificate.example.order_id}
+    connectionIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    description: Demo of Chef certificate sync
+    destinationConfig:
+      dataBagName: ssl_certificates
+    name: chef-certificate-sync-demo
+    syncOptions:
+      canRemoveCertificates: true
+      certificateNameSchema: Infisical-{{certificateId}}
+      fieldMappings:
+        caCertificate: ca_certificate
+        certificate: certificate
+        certificateChain: certificate_chain
+        privateKey: private_key
+      includeRootCa: false
+      preserveItemOnRenewal: true

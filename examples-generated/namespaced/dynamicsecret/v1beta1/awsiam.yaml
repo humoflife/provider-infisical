@@ -1,0 +1,41 @@
+apiVersion: dynamicsecret.infisical.m.upbound.io/v1beta1
+kind: AwsIam
+metadata:
+  annotations:
+    meta.upbound.io/example-id: dynamicsecret/v1beta1/awsiam
+  labels:
+    testing.upbound.io/example-name: aws-iam
+  name: aws-iam
+  namespace: default
+spec:
+  forProvider:
+    configuration:
+      accessKeyConfig:
+        accessKey: YOUR_AWS_ACCESS_KEY_ID
+        secretAccessKeySecretRef:
+          key: example-key
+          name: example-secret
+      awsPath: /
+      method: access_key
+      permissionBoundaryPolicyArn: arn:aws:iam::123456789012:policy/YourBoundaryPolicy
+      policyArns: arn:aws:iam::aws:policy/ReadOnlyAccess,arn:aws:iam::123456789012:policy/SpecificPolicy
+      policyDocument: |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "s3:ListBucket",
+              "Resource": "*"
+            }
+          ]
+        }
+      region: us-east-1
+      userGroups: group-a,group-b
+    defaultTtl: 2h
+    environmentSlug: dev
+    maxTtl: 4h
+    name: aws-iam-dynamic-secret-example
+    path: /
+    projectSlug: your-project-slug
+    usernameTemplate: '{{randomUsername}}'

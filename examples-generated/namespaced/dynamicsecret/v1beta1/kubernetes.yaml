@@ -1,0 +1,32 @@
+apiVersion: dynamicsecret.infisical.m.upbound.io/v1beta1
+kind: Kubernetes
+metadata:
+  annotations:
+    meta.upbound.io/example-id: dynamicsecret/v1beta1/kubernetes
+  labels:
+    testing.upbound.io/example-name: kubernetes
+  name: kubernetes
+  namespace: default
+spec:
+  forProvider:
+    configuration:
+      apiConfig:
+        ca: ""
+        clusterTokenSecretRef:
+          key: example-key
+          name: example-secret
+        clusterUrl: https://example.com
+        enableSsl: false
+      audiences: []
+      authMethod: api
+      credentialType: static
+      staticConfig:
+        namespace: default
+        serviceAccountName: test-account
+    defaultTtl: 1h
+    environmentSlug: dev
+    maxTtl: 4h
+    name: kubernetes-dynamic-secret-example
+    path: /
+    projectSlug: your-project-slug
+    usernameTemplate: '{{randomUsername}}'

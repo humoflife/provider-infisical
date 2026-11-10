@@ -1,0 +1,22 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionAzureKeyVault
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionazurekeyvault
+  labels:
+    testing.upbound.io/example-name: app_connection_azure_key_vault
+  name: app-connection-azure-key-vault
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      clientIdSecretRef:
+        key: example-key
+        name: example-secret
+      clientSecretSecretRef:
+        key: example-key
+        name: example-secret
+      tenantId: <azure-tenant-id>
+    description: I am a test Azure key vault app connection using client credentials
+    method: client-secret
+    name: app-connection-azure-key-vault

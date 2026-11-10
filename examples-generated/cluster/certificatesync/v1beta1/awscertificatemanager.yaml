@@ -1,0 +1,29 @@
+apiVersion: certificatesync.infisical.upbound.io/v1beta1
+kind: AwsCertificateManager
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certificatesync/v1beta1/awscertificatemanager
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    certificateFilters:
+      certificateOrderIds:
+      - ${infisical_cert_manager_certificate.api.order_id}
+      - ${infisical_cert_manager_certificate.www.order_id}
+    connectionIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    description: Demo of AWS Certificate Manager certificate sync
+    destinationConfig:
+      awsRegion: <aws-region>
+    name: aws-certificate-manager-certificate-sync-demo
+    syncOptions:
+      canRemoveCertificates: true
+      certificateNameSchema: Infisical-{{certificateId}}
+      includeRootCa: false
+      preserveArn: true

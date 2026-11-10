@@ -1,0 +1,24 @@
+apiVersion: project.infisical.m.upbound.io/v1beta1
+kind: Webhook
+metadata:
+  annotations:
+    meta.upbound.io/example-id: project/v1beta1/webhook
+  labels:
+    testing.upbound.io/example-name: lambda_trigger
+  name: lambda-trigger
+  namespace: default
+spec:
+  forProvider:
+    environment: prod
+    eventsFilter:
+    - secrets.modified
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    secretPath: /
+    webhookSecretKeySecretRef:
+      key: example-key
+      name: example-secret
+    webhookUrlSecretRef:
+      key: example-key
+      name: example-secret

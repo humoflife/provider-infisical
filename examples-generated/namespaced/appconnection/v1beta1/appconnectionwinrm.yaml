@@ -1,0 +1,26 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionWinrm
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionwinrm
+  labels:
+    testing.upbound.io/example-name: app-connection-winrm
+  name: app-connection-winrm
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      host: windows-host.example.com
+      passwordSecretRef:
+        key: example-key
+        name: example-secret
+      port: 5986
+      sslEnabled: true
+      sslRejectUnauthorized: true
+      username: EXAMPLE\administrator
+    description: I am a test app connection
+    gatewayIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    method: username-password
+    name: winrm-app-connection

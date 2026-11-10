@@ -1,0 +1,19 @@
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: InternalCa
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/internalca
+  labels:
+    testing.upbound.io/example-name: root
+  name: root
+spec:
+  forProvider:
+    commonName: Enterprise Root Certificate Authority
+    country: US
+    keyAlgorithm: RSA_2048
+    locality: San Francisco
+    name: enterprise-root-ca
+    organization: Acme Corp
+    ou: IT Security
+    province: California
+    type: root

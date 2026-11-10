@@ -1,0 +1,28 @@
+apiVersion: dynamicsecret.infisical.m.upbound.io/v1beta1
+kind: MongoDb
+metadata:
+  annotations:
+    meta.upbound.io/example-id: dynamicsecret/v1beta1/mongodb
+  labels:
+    testing.upbound.io/example-name: mongo-db
+  name: mongo-db
+  namespace: default
+spec:
+  forProvider:
+    configuration:
+      database: default
+      host: your-host
+      passwordSecretRef:
+        key: example-key
+        name: example-secret
+      port: 27017
+      roles:
+      - readWrite
+      username: your-username
+    defaultTtl: 1h
+    environmentSlug: dev
+    maxTtl: 24h
+    name: mongo-db-dynamic-secret-example
+    path: /
+    projectSlug: your-project-slug
+    usernameTemplate: '{{randomUsername}}'

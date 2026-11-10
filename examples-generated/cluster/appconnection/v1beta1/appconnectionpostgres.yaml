@@ -1,0 +1,23 @@
+apiVersion: appconnection.infisical.upbound.io/v1beta1
+kind: AppConnectionPostgres
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionpostgres
+  labels:
+    testing.upbound.io/example-name: postgres-demo
+  name: postgres-demo
+spec:
+  forProvider:
+    credentials:
+      database: default
+      host: example.com
+      passwordSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      port: 5432
+      sslEnabled: false
+      username: postgres
+    description: This is a demo postgres connection.
+    method: username-and-password
+    name: postgres-demo

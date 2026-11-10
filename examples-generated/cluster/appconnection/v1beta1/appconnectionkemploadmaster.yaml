@@ -1,0 +1,22 @@
+apiVersion: appconnection.infisical.upbound.io/v1beta1
+kind: AppConnectionKempLoadmaster
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionkemploadmaster
+  labels:
+    testing.upbound.io/example-name: app-connection-kemp-loadmaster
+  name: app-connection-kemp-loadmaster
+spec:
+  forProvider:
+    credentials:
+      hostname: loadmaster.example.com
+      passwordSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      port: 8443
+      sslRejectUnauthorized: true
+      username: <username>
+    description: I am a test app connection
+    method: basic-auth
+    name: kemp-loadmaster-app-connection

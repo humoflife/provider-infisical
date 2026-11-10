@@ -1,0 +1,82 @@
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: ApplicationApprovalPolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationapprovalpolicy
+  labels:
+    testing.upbound.io/example-name: payments_public_tls
+  name: payments-public-tls
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: payments
+    bypassForMachineIdentities: true
+    maxRequestTtl: 7d
+    name: Payments public TLS
+    profileNames:
+    - public-tls
+    steps:
+    - approvers:
+      - id: ${infisical_cert_manager_application_user.security_lead.user_id}
+        type: user
+      name: Security review
+      requiredApprovals: 1
+    - approvers:
+      - id: ${infisical_cert_manager_application_group.platform.group_id}
+        type: group
+      name: Platform sign-off
+      notifyApprovers: false
+      requiredApprovals: 1
+
+---
+
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: Application
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationapprovalpolicy
+  labels:
+    testing.upbound.io/example-name: payments
+  name: payments
+spec:
+  forProvider:
+    name: payments
+
+---
+
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: ApplicationGroup
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationapprovalpolicy
+  labels:
+    testing.upbound.io/example-name: platform
+  name: platform
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: payments
+    groupIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    role: operator
+
+---
+
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: ApplicationUser
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/applicationapprovalpolicy
+  labels:
+    testing.upbound.io/example-name: security_lead
+  name: security-lead
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: payments
+    email: security-lead@example.com
+    role: admin

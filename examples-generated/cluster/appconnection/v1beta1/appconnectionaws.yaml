@@ -1,0 +1,18 @@
+apiVersion: appconnection.infisical.upbound.io/v1beta1
+kind: AppConnectionAws
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionaws
+  labels:
+    testing.upbound.io/example-name: app-connection-aws-assume-role
+  name: app-connection-aws-assume-role
+spec:
+  forProvider:
+    credentials:
+      roleArnSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+    description: I am a test app connection
+    method: assume-role
+    name: aws-assume-role-app-connection

@@ -1,0 +1,15 @@
+apiVersion: certificatesync.infisical.m.upbound.io/v1beta1
+kind: Certificate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certificatesync/v1beta1/certificate
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: default
+spec:
+  forProvider:
+    certificateIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    certificateSyncId: ${infisical_certificate_sync_aws_certificate_manager.example.id}

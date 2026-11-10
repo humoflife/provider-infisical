@@ -1,0 +1,19 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionDigicert
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectiondigicert
+  labels:
+    testing.upbound.io/example-name: digicert-demo
+  name: digicert-demo
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      apiKeySecretRef:
+        key: example-key
+        name: example-secret
+      region: us
+    description: This is a demo DigiCert connection.
+    method: api-key
+    name: digicert-demo

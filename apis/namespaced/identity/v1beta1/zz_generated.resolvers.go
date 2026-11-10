@@ -9,9 +9,186 @@ package v1beta1
 import (
 	"context"
 	reference "github.com/crossplane/crossplane-runtime/v2/pkg/reference"
+	v1beta1 "github.com/infisical/provider-infisical/apis/namespaced/gateway/v1beta1"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+// ResolveReferences of this AwsAuth.
+func (mg *AwsAuth) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.IdentityIDRef,
+		Selector:     mg.Spec.ForProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.IdentityID")
+	}
+	mg.Spec.ForProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.IdentityIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.IdentityIDRef,
+		Selector:     mg.Spec.InitProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.IdentityID")
+	}
+	mg.Spec.InitProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.IdentityIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this AzureAuth.
+func (mg *AzureAuth) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.IdentityIDRef,
+		Selector:     mg.Spec.ForProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.IdentityID")
+	}
+	mg.Spec.ForProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.IdentityIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.IdentityIDRef,
+		Selector:     mg.Spec.InitProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.IdentityID")
+	}
+	mg.Spec.InitProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.IdentityIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this GcpAuth.
+func (mg *GcpAuth) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.IdentityIDRef,
+		Selector:     mg.Spec.ForProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.IdentityID")
+	}
+	mg.Spec.ForProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.IdentityIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.IdentityIDRef,
+		Selector:     mg.Spec.InitProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.IdentityID")
+	}
+	mg.Spec.InitProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.IdentityIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this JwtAuth.
+func (mg *JwtAuth) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.IdentityIDRef,
+		Selector:     mg.Spec.ForProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.IdentityID")
+	}
+	mg.Spec.ForProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.IdentityIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.IdentityIDRef,
+		Selector:     mg.Spec.InitProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.IdentityID")
+	}
+	mg.Spec.InitProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.IdentityIDRef = rsp.ResolvedReference
+
+	return nil
+}
 
 // ResolveReferences of this KubernetesAuth.
 func (mg *KubernetesAuth) ResolveReferences(ctx context.Context, c client.Reader) error {
@@ -57,8 +234,306 @@ func (mg *KubernetesAuth) ResolveReferences(ctx context.Context, c client.Reader
 	return nil
 }
 
+// ResolveReferences of this KubernetesAuthTemplate.
+func (mg *KubernetesAuthTemplate) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.GatewayID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.GatewayIDRef,
+		Selector:     mg.Spec.ForProvider.GatewayIDSelector,
+		To: reference.To{
+			List:    &v1beta1.GatewayList{},
+			Managed: &v1beta1.Gateway{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.GatewayID")
+	}
+	mg.Spec.ForProvider.GatewayID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.GatewayIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.GatewayID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.GatewayIDRef,
+		Selector:     mg.Spec.InitProvider.GatewayIDSelector,
+		To: reference.To{
+			List:    &v1beta1.GatewayList{},
+			Managed: &v1beta1.Gateway{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.GatewayID")
+	}
+	mg.Spec.InitProvider.GatewayID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.GatewayIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this OidcAuth.
+func (mg *OidcAuth) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.IdentityIDRef,
+		Selector:     mg.Spec.ForProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.IdentityID")
+	}
+	mg.Spec.ForProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.IdentityIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.TemplateID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.TemplateIDRef,
+		Selector:     mg.Spec.ForProvider.TemplateIDSelector,
+		To: reference.To{
+			List:    &OidcAuthTemplateList{},
+			Managed: &OidcAuthTemplate{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.TemplateID")
+	}
+	mg.Spec.ForProvider.TemplateID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.TemplateIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.IdentityIDRef,
+		Selector:     mg.Spec.InitProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.IdentityID")
+	}
+	mg.Spec.InitProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.IdentityIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.TemplateID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.TemplateIDRef,
+		Selector:     mg.Spec.InitProvider.TemplateIDSelector,
+		To: reference.To{
+			List:    &OidcAuthTemplateList{},
+			Managed: &OidcAuthTemplate{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.TemplateID")
+	}
+	mg.Spec.InitProvider.TemplateID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.TemplateIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this TlsCertAuth.
+func (mg *TlsCertAuth) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.IdentityIDRef,
+		Selector:     mg.Spec.ForProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.IdentityID")
+	}
+	mg.Spec.ForProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.IdentityIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.IdentityIDRef,
+		Selector:     mg.Spec.InitProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.IdentityID")
+	}
+	mg.Spec.InitProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.IdentityIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this TokenAuth.
+func (mg *TokenAuth) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.IdentityIDRef,
+		Selector:     mg.Spec.ForProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.IdentityID")
+	}
+	mg.Spec.ForProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.IdentityIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.IdentityIDRef,
+		Selector:     mg.Spec.InitProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.IdentityID")
+	}
+	mg.Spec.InitProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.IdentityIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this TokenAuthToken.
+func (mg *TokenAuthToken) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.IdentityIDRef,
+		Selector:     mg.Spec.ForProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.IdentityID")
+	}
+	mg.Spec.ForProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.IdentityIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.IdentityIDRef,
+		Selector:     mg.Spec.InitProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.IdentityID")
+	}
+	mg.Spec.InitProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.IdentityIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this UniversalAuth.
 func (mg *UniversalAuth) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.IdentityIDRef,
+		Selector:     mg.Spec.ForProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.IdentityID")
+	}
+	mg.Spec.ForProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.IdentityIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.IdentityID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.IdentityIDRef,
+		Selector:     mg.Spec.InitProvider.IdentityIDSelector,
+		To: reference.To{
+			List:    &IdentityList{},
+			Managed: &Identity{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.IdentityID")
+	}
+	mg.Spec.InitProvider.IdentityID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.IdentityIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this UniversalAuthClientSecret.
+func (mg *UniversalAuthClientSecret) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPINamespacedResolver(c, mg)
 
 	var rsp reference.NamespacedResolutionResponse

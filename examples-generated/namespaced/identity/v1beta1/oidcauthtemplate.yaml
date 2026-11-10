@@ -1,0 +1,54 @@
+apiVersion: identity.infisical.m.upbound.io/v1beta1
+kind: OidcAuthTemplate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/oidcauthtemplate
+  labels:
+    testing.upbound.io/example-name: github-actions
+  name: github-actions
+  namespace: default
+spec:
+  forProvider:
+    boundAudiences:
+    - https://github.com/<your-org>
+    boundIssuer: https://token.actions.githubusercontent.com
+    name: github-actions
+    oidcDiscoveryUrl: https://token.actions.githubusercontent.com
+
+---
+
+apiVersion: identity.infisical.m.upbound.io/v1beta1
+kind: Identity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/oidcauthtemplate
+  labels:
+    testing.upbound.io/example-name: machine-identity-demo
+  name: machine-identity-demo
+  namespace: default
+spec:
+  forProvider:
+    name: machine-identity-demo
+    orgId: <your-org-id>
+    role: admin
+
+---
+
+apiVersion: identity.infisical.m.upbound.io/v1beta1
+kind: OidcAuth
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/oidcauthtemplate
+  labels:
+    testing.upbound.io/example-name: oidc-auth-demo
+  name: oidc-auth-demo
+  namespace: default
+spec:
+  forProvider:
+    boundSubject: repo:<your-org>/<your-repo>:ref:refs/heads/main
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: machine-identity-demo
+    templateIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: github-actions

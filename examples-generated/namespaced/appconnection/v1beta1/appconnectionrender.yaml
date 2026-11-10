@@ -1,0 +1,18 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionRender
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionrender
+  labels:
+    testing.upbound.io/example-name: render-demo
+  name: render-demo
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      apiKeySecretRef:
+        key: example-key
+        name: example-secret
+    description: This is a demo render connection.
+    method: api-key
+    name: render-demo

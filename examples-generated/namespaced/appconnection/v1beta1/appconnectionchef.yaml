@@ -1,0 +1,20 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionChef
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionchef
+  labels:
+    testing.upbound.io/example-name: app-connection-chef
+  name: app-connection-chef
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      orgName: <chef-organization-name>
+      privateKeySecretRef:
+        key: example-key
+        name: example-secret
+      userName: <chef-user-name>
+    description: I am a test app connection
+    method: user-key
+    name: chef-app-connection

@@ -1,0 +1,36 @@
+apiVersion: certificatesync.infisical.m.upbound.io/v1beta1
+kind: GcpCertificateManager
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certificatesync/v1beta1/gcpcertificatemanager
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: default
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    certificateFilters:
+      certificateOrderIds:
+      - ${infisical_cert_manager_certificate.example.order_id}
+    connectionIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    description: Demo of GCP Certificate Manager certificate sync
+    destinationConfig:
+      certificateMapBinding:
+        certificateMap: my-certificate-map
+        hostname: www.example.com
+      gcpProjectId: my-gcp-project
+      location: global
+      scope: default
+    name: gcp-certificate-manager-certificate-sync-demo
+    syncOptions:
+      canRemoveCertificates: true
+      certificateNameSchema: infisical-{{certificateId}}
+      includeRootCa: false
+      labels:
+        environment: production
+      preserveItemOnRenewal: true

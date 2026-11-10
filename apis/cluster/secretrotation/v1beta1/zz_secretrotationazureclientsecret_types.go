@@ -13,76 +13,6 @@ import (
 	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
-type ParametersInitParameters struct {
-
-	// (String) The client ID of the Azure Application to rotate the client secret for.
-	// The client ID of the Azure Application to rotate the client secret for.
-	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
-
-	// (String) The ID of the Azure Application to rotate the client secret for.
-	// The ID of the Azure Application to rotate the client secret for.
-	ObjectID *string `json:"objectId,omitempty" tf:"object_id,omitempty"`
-}
-
-type ParametersObservation struct {
-
-	// (String) The client ID of the Azure Application to rotate the client secret for.
-	// The client ID of the Azure Application to rotate the client secret for.
-	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
-
-	// (String) The ID of the Azure Application to rotate the client secret for.
-	// The ID of the Azure Application to rotate the client secret for.
-	ObjectID *string `json:"objectId,omitempty" tf:"object_id,omitempty"`
-}
-
-type ParametersParameters struct {
-
-	// (String) The client ID of the Azure Application to rotate the client secret for.
-	// The client ID of the Azure Application to rotate the client secret for.
-	// +kubebuilder:validation:Optional
-	ClientID *string `json:"clientId" tf:"client_id,omitempty"`
-
-	// (String) The ID of the Azure Application to rotate the client secret for.
-	// The ID of the Azure Application to rotate the client secret for.
-	// +kubebuilder:validation:Optional
-	ObjectID *string `json:"objectId" tf:"object_id,omitempty"`
-}
-
-type RotateAtUtcInitParameters struct {
-
-	// (Number) The hour at which the rotation should occur (UTC).
-	// The hour at which the rotation should occur (UTC).
-	Hours *float64 `json:"hours,omitempty" tf:"hours,omitempty"`
-
-	// (Number) The minute at which the rotation should occur (UTC).
-	// The minute at which the rotation should occur (UTC).
-	Minutes *float64 `json:"minutes,omitempty" tf:"minutes,omitempty"`
-}
-
-type RotateAtUtcObservation struct {
-
-	// (Number) The hour at which the rotation should occur (UTC).
-	// The hour at which the rotation should occur (UTC).
-	Hours *float64 `json:"hours,omitempty" tf:"hours,omitempty"`
-
-	// (Number) The minute at which the rotation should occur (UTC).
-	// The minute at which the rotation should occur (UTC).
-	Minutes *float64 `json:"minutes,omitempty" tf:"minutes,omitempty"`
-}
-
-type RotateAtUtcParameters struct {
-
-	// (Number) The hour at which the rotation should occur (UTC).
-	// The hour at which the rotation should occur (UTC).
-	// +kubebuilder:validation:Optional
-	Hours *float64 `json:"hours,omitempty" tf:"hours,omitempty"`
-
-	// (Number) The minute at which the rotation should occur (UTC).
-	// The minute at which the rotation should occur (UTC).
-	// +kubebuilder:validation:Optional
-	Minutes *float64 `json:"minutes,omitempty" tf:"minutes,omitempty"`
-}
-
 type SecretRotationAzureClientSecretInitParameters struct {
 
 	// (Boolean) Whether secrets should be automatically rotated.
@@ -115,7 +45,7 @@ type SecretRotationAzureClientSecretInitParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (Attributes) Parameters to modify how secrets are rotated. (see below for nested schema)
-	Parameters *ParametersInitParameters `json:"parameters,omitempty" tf:"parameters,omitempty"`
+	Parameters *SecretRotationAzureClientSecretParametersInitParameters `json:"parameters,omitempty" tf:"parameters,omitempty"`
 
 	// (String) The ID of the Infisical project to create the secret rotation in.
 	// The ID of the Infisical project to create the secret rotation in.
@@ -131,7 +61,7 @@ type SecretRotationAzureClientSecretInitParameters struct {
 	ProjectIDSelector *v2.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// (Attributes) At which UTC time the rotation should occur. (see below for nested schema)
-	RotateAtUtc *RotateAtUtcInitParameters `json:"rotateAtUtc,omitempty" tf:"rotate_at_utc,omitempty"`
+	RotateAtUtc *SecretRotationAzureClientSecretRotateAtUtcInitParameters `json:"rotateAtUtc,omitempty" tf:"rotate_at_utc,omitempty"`
 
 	// (Number) How many days to wait between each rotation.
 	// How many days to wait between each rotation.
@@ -142,10 +72,10 @@ type SecretRotationAzureClientSecretInitParameters struct {
 	SecretPath *string `json:"secretPath,omitempty" tf:"secret_path,omitempty"`
 
 	// (Attributes) Secret mappings to modify how secrets are rotated. (see below for nested schema)
-	SecretsMapping *SecretsMappingInitParameters `json:"secretsMapping,omitempty" tf:"secrets_mapping,omitempty"`
+	SecretsMapping *SecretRotationAzureClientSecretSecretsMappingInitParameters `json:"secretsMapping,omitempty" tf:"secrets_mapping,omitempty"`
 
 	// (Attributes) Temporary parameters to modify how secrets are rotated. (see below for nested schema)
-	TemporaryParameters *TemporaryParametersInitParameters `json:"temporaryParameters,omitempty" tf:"temporary_parameters,omitempty"`
+	TemporaryParameters *SecretRotationAzureClientSecretTemporaryParametersInitParameters `json:"temporaryParameters,omitempty" tf:"temporary_parameters,omitempty"`
 }
 
 type SecretRotationAzureClientSecretObservation struct {
@@ -174,14 +104,14 @@ type SecretRotationAzureClientSecretObservation struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (Attributes) Parameters to modify how secrets are rotated. (see below for nested schema)
-	Parameters *ParametersObservation `json:"parameters,omitempty" tf:"parameters,omitempty"`
+	Parameters *SecretRotationAzureClientSecretParametersObservation `json:"parameters,omitempty" tf:"parameters,omitempty"`
 
 	// (String) The ID of the Infisical project to create the secret rotation in.
 	// The ID of the Infisical project to create the secret rotation in.
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
 	// (Attributes) At which UTC time the rotation should occur. (see below for nested schema)
-	RotateAtUtc *RotateAtUtcObservation `json:"rotateAtUtc,omitempty" tf:"rotate_at_utc,omitempty"`
+	RotateAtUtc *SecretRotationAzureClientSecretRotateAtUtcObservation `json:"rotateAtUtc,omitempty" tf:"rotate_at_utc,omitempty"`
 
 	// (Number) How many days to wait between each rotation.
 	// How many days to wait between each rotation.
@@ -192,10 +122,10 @@ type SecretRotationAzureClientSecretObservation struct {
 	SecretPath *string `json:"secretPath,omitempty" tf:"secret_path,omitempty"`
 
 	// (Attributes) Secret mappings to modify how secrets are rotated. (see below for nested schema)
-	SecretsMapping *SecretsMappingObservation `json:"secretsMapping,omitempty" tf:"secrets_mapping,omitempty"`
+	SecretsMapping *SecretRotationAzureClientSecretSecretsMappingObservation `json:"secretsMapping,omitempty" tf:"secrets_mapping,omitempty"`
 
 	// (Attributes) Temporary parameters to modify how secrets are rotated. (see below for nested schema)
-	TemporaryParameters *TemporaryParametersParameters `json:"temporaryParameters,omitempty" tf:"temporary_parameters,omitempty"`
+	TemporaryParameters *SecretRotationAzureClientSecretTemporaryParametersParameters `json:"temporaryParameters,omitempty" tf:"temporary_parameters,omitempty"`
 }
 
 type SecretRotationAzureClientSecretParameters struct {
@@ -236,7 +166,7 @@ type SecretRotationAzureClientSecretParameters struct {
 
 	// (Attributes) Parameters to modify how secrets are rotated. (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	Parameters *ParametersParameters `json:"parameters,omitempty" tf:"parameters,omitempty"`
+	Parameters *SecretRotationAzureClientSecretParametersParameters `json:"parameters,omitempty" tf:"parameters,omitempty"`
 
 	// (String) The ID of the Infisical project to create the secret rotation in.
 	// The ID of the Infisical project to create the secret rotation in.
@@ -254,7 +184,7 @@ type SecretRotationAzureClientSecretParameters struct {
 
 	// (Attributes) At which UTC time the rotation should occur. (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	RotateAtUtc *RotateAtUtcParameters `json:"rotateAtUtc,omitempty" tf:"rotate_at_utc,omitempty"`
+	RotateAtUtc *SecretRotationAzureClientSecretRotateAtUtcParameters `json:"rotateAtUtc,omitempty" tf:"rotate_at_utc,omitempty"`
 
 	// (Number) How many days to wait between each rotation.
 	// How many days to wait between each rotation.
@@ -268,14 +198,84 @@ type SecretRotationAzureClientSecretParameters struct {
 
 	// (Attributes) Secret mappings to modify how secrets are rotated. (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	SecretsMapping *SecretsMappingParameters `json:"secretsMapping,omitempty" tf:"secrets_mapping,omitempty"`
+	SecretsMapping *SecretRotationAzureClientSecretSecretsMappingParameters `json:"secretsMapping,omitempty" tf:"secrets_mapping,omitempty"`
 
 	// (Attributes) Temporary parameters to modify how secrets are rotated. (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	TemporaryParameters *TemporaryParametersParameters `json:"temporaryParameters,omitempty" tf:"temporary_parameters,omitempty"`
+	TemporaryParameters *SecretRotationAzureClientSecretTemporaryParametersParameters `json:"temporaryParameters,omitempty" tf:"temporary_parameters,omitempty"`
 }
 
-type SecretsMappingInitParameters struct {
+type SecretRotationAzureClientSecretParametersInitParameters struct {
+
+	// (String) The client ID of the Azure Application to rotate the client secret for.
+	// The client ID of the Azure Application to rotate the client secret for.
+	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	// (String) The ID of the Azure Application to rotate the client secret for.
+	// The ID of the Azure Application to rotate the client secret for.
+	ObjectID *string `json:"objectId,omitempty" tf:"object_id,omitempty"`
+}
+
+type SecretRotationAzureClientSecretParametersObservation struct {
+
+	// (String) The client ID of the Azure Application to rotate the client secret for.
+	// The client ID of the Azure Application to rotate the client secret for.
+	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	// (String) The ID of the Azure Application to rotate the client secret for.
+	// The ID of the Azure Application to rotate the client secret for.
+	ObjectID *string `json:"objectId,omitempty" tf:"object_id,omitempty"`
+}
+
+type SecretRotationAzureClientSecretParametersParameters struct {
+
+	// (String) The client ID of the Azure Application to rotate the client secret for.
+	// The client ID of the Azure Application to rotate the client secret for.
+	// +kubebuilder:validation:Optional
+	ClientID *string `json:"clientId" tf:"client_id,omitempty"`
+
+	// (String) The ID of the Azure Application to rotate the client secret for.
+	// The ID of the Azure Application to rotate the client secret for.
+	// +kubebuilder:validation:Optional
+	ObjectID *string `json:"objectId" tf:"object_id,omitempty"`
+}
+
+type SecretRotationAzureClientSecretRotateAtUtcInitParameters struct {
+
+	// (Number) The hour at which the rotation should occur (UTC).
+	// The hour at which the rotation should occur (UTC).
+	Hours *float64 `json:"hours,omitempty" tf:"hours,omitempty"`
+
+	// (Number) The minute at which the rotation should occur (UTC).
+	// The minute at which the rotation should occur (UTC).
+	Minutes *float64 `json:"minutes,omitempty" tf:"minutes,omitempty"`
+}
+
+type SecretRotationAzureClientSecretRotateAtUtcObservation struct {
+
+	// (Number) The hour at which the rotation should occur (UTC).
+	// The hour at which the rotation should occur (UTC).
+	Hours *float64 `json:"hours,omitempty" tf:"hours,omitempty"`
+
+	// (Number) The minute at which the rotation should occur (UTC).
+	// The minute at which the rotation should occur (UTC).
+	Minutes *float64 `json:"minutes,omitempty" tf:"minutes,omitempty"`
+}
+
+type SecretRotationAzureClientSecretRotateAtUtcParameters struct {
+
+	// (Number) The hour at which the rotation should occur (UTC).
+	// The hour at which the rotation should occur (UTC).
+	// +kubebuilder:validation:Optional
+	Hours *float64 `json:"hours,omitempty" tf:"hours,omitempty"`
+
+	// (Number) The minute at which the rotation should occur (UTC).
+	// The minute at which the rotation should occur (UTC).
+	// +kubebuilder:validation:Optional
+	Minutes *float64 `json:"minutes,omitempty" tf:"minutes,omitempty"`
+}
+
+type SecretRotationAzureClientSecretSecretsMappingInitParameters struct {
 
 	// (String) The client ID of the Azure Application to rotate the client secret for.
 	// The name of the secret that the client ID will be mapped to.
@@ -286,7 +286,7 @@ type SecretsMappingInitParameters struct {
 	ClientSecret *string `json:"clientSecret,omitempty" tf:"client_secret,omitempty"`
 }
 
-type SecretsMappingObservation struct {
+type SecretRotationAzureClientSecretSecretsMappingObservation struct {
 
 	// (String) The client ID of the Azure Application to rotate the client secret for.
 	// The name of the secret that the client ID will be mapped to.
@@ -297,7 +297,7 @@ type SecretsMappingObservation struct {
 	ClientSecret *string `json:"clientSecret,omitempty" tf:"client_secret,omitempty"`
 }
 
-type SecretsMappingParameters struct {
+type SecretRotationAzureClientSecretSecretsMappingParameters struct {
 
 	// (String) The client ID of the Azure Application to rotate the client secret for.
 	// The name of the secret that the client ID will be mapped to.
@@ -310,13 +310,13 @@ type SecretsMappingParameters struct {
 	ClientSecret *string `json:"clientSecret" tf:"client_secret,omitempty"`
 }
 
-type TemporaryParametersInitParameters struct {
+type SecretRotationAzureClientSecretTemporaryParametersInitParameters struct {
 }
 
-type TemporaryParametersObservation struct {
+type SecretRotationAzureClientSecretTemporaryParametersObservation struct {
 }
 
-type TemporaryParametersParameters struct {
+type SecretRotationAzureClientSecretTemporaryParametersParameters struct {
 }
 
 // SecretRotationAzureClientSecretSpec defines the desired state of SecretRotationAzureClientSecret

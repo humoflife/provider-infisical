@@ -7,6 +7,9 @@ The example adds `infisical_secret_sync_aws_parameter_store`.
 1. **Find the resource name** in `config/schema.json`.
    If the resource is not there, increase `TERRAFORM_PROVIDER_VERSION` in the
    `Makefile`.
+   Every resource of `config/schema.json` must be configured:
+   `TestProviders` in `config/provider_test.go` fails for a resource that is
+   not.
 
 2. **Add the external name** in `config/external_name.go`:
 

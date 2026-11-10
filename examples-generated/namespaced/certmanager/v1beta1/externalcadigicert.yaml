@@ -1,0 +1,40 @@
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: ExternalCaDigicert
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/externalcadigicert
+  labels:
+    testing.upbound.io/example-name: ssl
+  name: ssl
+  namespace: default
+spec:
+  forProvider:
+    appConnectionIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: digicert
+    name: digicert-ssl
+    organizationId: 123456
+    productNameId: ssl_plus
+    purpose: ssl
+    status: active
+
+---
+
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionDigicert
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/externalcadigicert
+  labels:
+    testing.upbound.io/example-name: digicert
+  name: digicert
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      apiKeySecretRef:
+        key: example-key
+        name: example-secret
+      region: us
+    method: api-key
+    name: digicert-connection

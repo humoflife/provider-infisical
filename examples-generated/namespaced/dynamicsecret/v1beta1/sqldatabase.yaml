@@ -1,0 +1,43 @@
+apiVersion: dynamicsecret.infisical.m.upbound.io/v1beta1
+kind: SqlDatabase
+metadata:
+  annotations:
+    meta.upbound.io/example-id: dynamicsecret/v1beta1/sqldatabase
+  labels:
+    testing.upbound.io/example-name: sql-database
+  name: sql-database
+  namespace: default
+spec:
+  forProvider:
+    configuration:
+      client: postgres
+      creationStatement: |
+        CREATE USER "{{username}}" WITH ENCRYPTED PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';
+        GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "{{username}}";
+      database: infisical
+      host: host.docker.internal
+      passwordRequirements:
+        allowedSymbols: '!@#$%^&*()_+-=[]{}|:,.<>?`~'
+        length: 32
+        required:
+          digits: 3
+          lowercase: 2
+          symbols: 2
+          uppercase: 2
+      passwordSecretRef:
+        key: example-key
+        name: example-secret
+      port: 5431
+      renewStatement: |
+        ALTER ROLE "{{username}}" VALID UNTIL "{{expiration}}";
+      revocationStatement: |
+        REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM "{{username}}";
+        DROP ROLE "{{username}}";
+      username: infisical
+    defaultTtl: 2h
+    environmentSlug: prod
+    maxTtl: 4h
+    name: postgres-dynamic-secret
+    path: /
+    projectSlug: project-7-new-c7-vv
+    usernameTemplate: '{{randomUsername}}'

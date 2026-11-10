@@ -1,0 +1,22 @@
+apiVersion: appconnection.infisical.m.upbound.io/v1beta1
+kind: AppConnectionAzureAppConfiguration
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionazureappconfiguration
+  labels:
+    testing.upbound.io/example-name: app_connection_azure_app_configuration
+  name: app-connection-azure-app-configuration
+  namespace: default
+spec:
+  forProvider:
+    credentials:
+      clientIdSecretRef:
+        key: example-key
+        name: example-secret
+      clientSecretSecretRef:
+        key: example-key
+        name: example-secret
+      tenantId: <azure-tenant-id>
+    description: I am a test Azure app configuration app connection using client credentials
+    method: client-secret
+    name: app-connection-azure-app-configuration

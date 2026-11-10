@@ -1,0 +1,30 @@
+apiVersion: dynamicsecret.infisical.upbound.io/v1beta1
+kind: MongoAtlas
+metadata:
+  annotations:
+    meta.upbound.io/example-id: dynamicsecret/v1beta1/mongoatlas
+  labels:
+    testing.upbound.io/example-name: mongo-atlas
+  name: mongo-atlas
+spec:
+  forProvider:
+    configuration:
+      adminPrivateKeySecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      adminPublicKey: your-admin-public-key
+      groupId: your-group-id
+      roles:
+      - databaseName: my-application-db
+        roleName: readWrite
+      scopes:
+      - name: myCluster
+        type: CLUSTER
+    defaultTtl: 1h
+    environmentSlug: dev
+    maxTtl: 4h
+    name: mongo-atlas-dynamic-secret-example
+    path: /
+    projectSlug: your-project-slug
+    usernameTemplate: '{{randomUsername}}'

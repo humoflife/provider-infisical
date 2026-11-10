@@ -1,0 +1,12 @@
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/user
+  labels:
+    testing.upbound.io/example-name: admin
+  name: admin
+spec:
+  forProvider:
+    email: admin@example.com
+    role: admin

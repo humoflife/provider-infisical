@@ -1,0 +1,25 @@
+apiVersion: kms.infisical.upbound.io/v1beta1
+kind: ExternalAws
+metadata:
+  annotations:
+    meta.upbound.io/example-id: kms/v1beta1/externalaws
+  labels:
+    testing.upbound.io/example-name: external-kms-aws-assume-role
+  name: external-kms-aws-assume-role
+spec:
+  forProvider:
+    configuration:
+      awsKmsKeyId: <aws-kms-key-id>
+      awsRegion: us-east-1
+      credential:
+        roleArnSecretRef:
+          key: example-key
+          name: example-secret
+          namespace: upbound-system
+        roleExternalIdSecretRef:
+          key: example-key
+          name: example-secret
+          namespace: upbound-system
+      type: assume-role
+    description: AWS External KMS using assume-role type
+    name: aws-assume-role-external-kms

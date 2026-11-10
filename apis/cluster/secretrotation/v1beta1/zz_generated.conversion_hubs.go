@@ -7,4 +7,31 @@
 package v1beta1
 
 // Hub marks this type as a conversion hub.
+func (tr *SecretRotationAuth0ClientSecret) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretRotationAwsIamUserSecret) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *SecretRotationAzureClientSecret) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretRotationDatadogApiKey) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretRotationLdapPassword) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretRotationLitellmApiKey) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretRotationMssqlCredentials) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretRotationMysqlCredentials) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretRotationOracledbCredentials) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecretRotationPostgresCredentials) Hub() {}

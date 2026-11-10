@@ -1,0 +1,14 @@
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: ExternalCaAdcs
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/externalcaadcs
+  labels:
+    testing.upbound.io/example-name: adcs
+  name: adcs
+  namespace: default
+spec:
+  forProvider:
+    azureAdcsConnectionId: your-azure-adcs-connection-id
+    name: corporate-adcs
+    status: active

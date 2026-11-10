@@ -1,0 +1,17 @@
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: ExternalCaAcme
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/externalcaacme
+  labels:
+    testing.upbound.io/example-name: letsencrypt
+  name: letsencrypt
+spec:
+  forProvider:
+    accountEmail: admin@acme.com
+    directoryUrl: https://acme-v02.api.letsencrypt.org/directory
+    dnsAppConnectionId: your-route53-connection-id
+    dnsHostedZoneId: Z123456789ABCDEFGH
+    dnsProvider: route53
+    name: letsencrypt-prod
+    status: active

@@ -1,0 +1,97 @@
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: CertificateProfile
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/certificateprofile
+  labels:
+    testing.upbound.io/example-name: web_server
+  name: web-server
+  namespace: default
+spec:
+  forProvider:
+    caId: ${infisical_cert_manager_internal_ca.issuing.id}
+    certificatePolicyIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: web_server
+    defaults:
+      commonName: service.example.com
+      extendedKeyUsages:
+      - server_auth
+      keyAlgorithm: RSA_2048
+      keyUsages:
+      - digital_signature
+      signatureAlgorithm: RSA-SHA256
+      ttlDays: 90
+    description: Profile for issuing web server certificates
+    issuerType: ca
+    name: web-server
+
+---
+
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: CertificatePolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/certificateprofile
+  labels:
+    testing.upbound.io/example-name: web_server
+  name: web-server
+  namespace: default
+spec:
+  forProvider:
+    algorithms:
+      keyAlgorithm:
+      - RSA-2048
+      - RSA-3072
+      signature:
+      - SHA256-RSA
+    description: Policy for web server certificates
+    extendedKeyUsages:
+      allowed:
+      - server_auth
+      - client_auth
+    keyUsages:
+      allowed:
+      - digital_signature
+      - key_encipherment
+    name: web-server-policy
+    sans:
+    - allowed:
+      - '*.example.com'
+      required:
+      - '*.example.com'
+      type: dns_name
+    subject:
+    - allowed:
+      - '*.example.com'
+      required:
+      - '*.example.com'
+      type: common_name
+    - required:
+      - Example Corp
+      type: organization
+    validity:
+      max: 90d
+
+---
+
+apiVersion: certmanager.infisical.m.upbound.io/v1beta1
+kind: InternalCa
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/certificateprofile
+  labels:
+    testing.upbound.io/example-name: issuing
+  name: issuing
+  namespace: default
+spec:
+  forProvider:
+    commonName: Enterprise Issuing Certificate Authority
+    country: US
+    keyAlgorithm: RSA_2048
+    locality: San Francisco
+    name: enterprise-issuing-ca
+    organization: Example Corp
+    ou: IT Security
+    province: California
+    type: intermediate

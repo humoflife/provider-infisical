@@ -28,5 +28,4 @@ metadata:
 spec:
   forProvider:
     name: example
-    position: 1
     slug: example

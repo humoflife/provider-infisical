@@ -1,0 +1,23 @@
+apiVersion: appconnection.infisical.upbound.io/v1beta1
+kind: AppConnectionMssql
+metadata:
+  annotations:
+    meta.upbound.io/example-id: appconnection/v1beta1/appconnectionmssql
+  labels:
+    testing.upbound.io/example-name: mssql-demo
+  name: mssql-demo
+spec:
+  forProvider:
+    credentials:
+      database: default
+      host: example.com
+      passwordSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      port: 1433
+      sslEnabled: false
+      username: root
+    description: This is a demo mssql connection.
+    method: username-and-password
+    name: mssql-demo

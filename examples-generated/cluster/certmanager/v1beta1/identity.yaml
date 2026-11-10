@@ -1,0 +1,14 @@
+apiVersion: certmanager.infisical.upbound.io/v1beta1
+kind: Identity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certmanager/v1beta1/identity
+  labels:
+    testing.upbound.io/example-name: ci
+  name: ci
+spec:
+  forProvider:
+    identityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    role: admin
