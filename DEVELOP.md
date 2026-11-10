@@ -36,8 +36,8 @@ The example adds `infisical_secret_sync_aws_parameter_store`.
    make generate
    ```
 
-   New resources only get `v1alpha2`. Do not add them to `v1alpha1Resources`
-   in `config/provider.go`.
+   This generates a cluster scoped kind in `apis/cluster/` and a namespaced
+   kind in `apis/namespaced/`, both with the API version `v1beta1`.
 
 5. **Build and test:**
 
@@ -46,19 +46,33 @@ The example adds `infisical_secret_sync_aws_parameter_store`.
    make build
    ```
 
-6. **Add e2e tests** (optional): add a fixture to `test/e2e/testdata/v1alpha2/`
-   and an entry with `onlyV1alpha2: true` to `test/e2e/objects_test.go`.
+6. **Add e2e tests** (optional): add a cluster scoped fixture to
+   `test/e2e/testdata/` and an entry to `test/e2e/objects_test.go`. The test
+   also creates the namespaced kind from the same fixture.
 
 7. **Commit** the config changes and all the generated files.
 
 ## Update the Terraform provider
 
-1. Set `TERRAFORM_PROVIDER_VERSION` in the `Makefile`.
-2. Run `make generate`.
-3. Look at the changes in `package/crds/`. If a field of an existing kind is
-   removed or changes its type, that is a breaking change for users.
+The provider runs the Terraform provider in-process (no-fork): it imports the
+Terraform Plugin Framework provider from the fork
+`github.com/humoflife/terraform-provider-infisical`. The provider code of the
+upstream module is internal, so the fork adds the exported package `xpprovider`
+on the branch `xpprovider` and declares the fully qualified module path
+`github.com/humoflife/terraform-provider-infisical` (upstream declares
+`terraform-provider-infisical`, which makes `go mod verify` fail with
+`missing ziphash`). The fork tags are named after the release they are based
+on, for example `v0.20.6-xp.2`.
 
-Never change the files in `apis/*/v1alpha1/`.
+1. Set `TERRAFORM_PROVIDER_VERSION` in the `Makefile`. `make generate` takes
+   the schema and the docs from this release.
+2. Rebase the `xpprovider` branch of the fork on the same release tag, keep
+   the fully qualified module path, tag it, and require that tag in `go.mod`
+   (`go get github.com/humoflife/terraform-provider-infisical@<tag>`). Then run
+   `go mod tidy`.
+3. Run `make generate`.
+4. Look at the changes in `package/crds/`. If a field of an existing kind is
+   removed or changes its type, that is a breaking change for users.
 
 ## Release
 

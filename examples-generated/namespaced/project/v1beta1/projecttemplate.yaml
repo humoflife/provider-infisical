@@ -1,0 +1,53 @@
+apiVersion: project.infisical.m.upbound.io/v1beta1
+kind: ProjectTemplate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: project/v1beta1/projecttemplate
+  labels:
+    testing.upbound.io/example-name: example-project-template
+  name: example-project-template
+  namespace: default
+spec:
+  forProvider:
+    description: This is an example project template
+    environments:
+    - name: development
+      position: 1
+      slug: dev
+    groups:
+    - groupSlug: engineering
+      roles:
+      - member
+    identities:
+    - identityId: <machine-identity-id>
+      roles:
+      - test
+      - admin
+    name: example-project-template
+    roles:
+    - name: Test
+      permissions:
+      - action:
+        - edit
+        inverted: true
+        subject: secret-folders
+      - action:
+        - read
+        - edit
+        conditions: |-
+          ${jsonencode({
+                    environment = {
+                      "$in" = ["dev", "prod"]
+                      "$eq" = "dev"
+                    }
+                    secretPath = {
+                      "$eq" = "/"
+                    }
+                  })}
+        subject: secrets
+      slug: test
+    type: secret-manager
+    users:
+    - roles:
+      - test
+      username: user@example.com

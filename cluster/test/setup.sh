@@ -13,7 +13,7 @@ ${KUBECTL} -n "${CROSSPLANE_NAMESPACE:-crossplane-system}" wait --for=condition=
 
 echo "Creating a default provider config..."
 cat <<EOF | ${KUBECTL} apply -f -
-apiVersion: crossplane.infisical.com/v1beta1
+apiVersion: infisical.upbound.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: default
