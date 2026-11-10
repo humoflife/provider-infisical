@@ -251,6 +251,7 @@ spec:
     source: Secret
     secretRef:
       name: e2e-provider-creds
+      namespace: ${TEST_NS}
       key: credentials
 EOF
   endgroup

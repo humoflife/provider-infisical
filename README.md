@@ -124,7 +124,9 @@ Every kind is also available as a namespaced managed resource in the
 `*.infisical.m.upbound.io` API groups, for example
 `project.infisical.m.upbound.io/v1beta1`. A namespaced managed resource
 references a `ProviderConfig` in its own namespace, which reads the credentials
-Secret from that namespace, or a cluster scoped `ClusterProviderConfig`:
+Secret from that namespace, or a cluster scoped `ClusterProviderConfig`. The
+CRD requires `secretRef.namespace`, but a `ProviderConfig` always reads the
+Secret from its own namespace:
 
 ```yaml
 apiVersion: infisical.m.upbound.io/v1beta1
@@ -138,6 +140,7 @@ spec:
     source: Secret
     secretRef:
       name: example-creds
+      namespace: team-a
       key: credentials
 ---
 apiVersion: project.infisical.m.upbound.io/v1beta1
