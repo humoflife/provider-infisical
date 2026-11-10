@@ -92,6 +92,7 @@ jobs:
           INFISICAL_GITHUB_CONNECTION_ID: ${{ secrets.INFISICAL_GITHUB_CONNECTION_ID }}
           INFISICAL_GITHUB_REPO_OWNER: ${{ secrets.INFISICAL_GITHUB_REPO_OWNER }}
           INFISICAL_GITHUB_REPO_NAME: ${{ secrets.INFISICAL_GITHUB_REPO_NAME }}
+          INFISICAL_E2E_PAID_PLAN: ${{ secrets.INFISICAL_E2E_PAID_PLAN }}
           E2E_ARTIFACTS_DIR: ${{ github.workspace }}/_output/e2e
         run: |
           make test-e2e \

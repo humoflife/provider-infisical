@@ -59,6 +59,15 @@ if (( ${#missing_github[@]} > 0 )); then
   fi
   echo "WARNING: ${message}" >&2
 fi
+# Optional: groups, secret approval policies, project templates and a fourth
+# environment need a paid Infisical plan, and are only tested when this is "true".
+if [[ "${INFISICAL_E2E_PAID_PLAN:-}" != "true" ]]; then
+  message="INFISICAL_E2E_PAID_PLAN is not \"true\": the kinds that need a paid Infisical plan are not tested. See test/e2e/README.md."
+  if [[ "${CI}" == "true" ]]; then
+    echo "::warning title=E2E paid plan kinds not tested::${message}"
+  fi
+  echo "WARNING: ${message}" >&2
+fi
 
 KIND="${KIND:-kind}"
 HELM="${HELM:-helm}"

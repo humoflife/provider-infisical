@@ -103,6 +103,14 @@ func TestMain(m *testing.M) {
 		fmt.Fprintln(os.Stderr, "INFISICAL_GITHUB_CONNECTION_ID, INFISICAL_GITHUB_REPO_OWNER or INFISICAL_GITHUB_REPO_NAME is not set: the GitHub secret sync is not tested")
 		objects = withoutObject(objects, githubSecretSyncFile)
 	}
+	// Groups, secret approval policies, project templates and a fourth
+	// environment need a paid Infisical plan. Unless the organization has one,
+	// those objects are not tested.
+	if os.Getenv("INFISICAL_E2E_PAID_PLAN") != "true" {
+		var skippedNames []string
+		objects, skippedNames = withoutPaidPlan(objects)
+		fmt.Fprintf(os.Stderr, "INFISICAL_E2E_PAID_PLAN is not \"true\": these objects need a paid Infisical plan and are not tested: %s\n", strings.Join(skippedNames, ", "))
+	}
 	if problems := checkFixtures(); len(problems) > 0 {
 		fmt.Fprintf(os.Stderr, "the test fixtures do not match the test objects in objects_test.go:\n  %s\n", strings.Join(problems, "\n  "))
 		os.Exit(1)

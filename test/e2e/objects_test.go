@@ -33,6 +33,11 @@ type object struct {
 	// it must become ready.
 	notReady string
 
+	// paidPlan is the feature of a paid Infisical plan that the object needs.
+	// "" means it works on the free plan. Objects that need a paid plan are
+	// only tested when INFISICAL_E2E_PAID_PLAN is "true".
+	paidPlan string
+
 	// update is the update test: a merge patch of spec.forProvider, and the
 	// value that status.atProvider must then have. Values are JSON with the
 	// placeholders of the fixtures.
@@ -56,6 +61,16 @@ func (o object) testName() string {
 var (
 	reasonKubernetesAuth = "Infisical calls the Kubernetes API of kubernetesHost when the auth method is created, and the test has no Kubernetes API that Infisical can reach"
 	reasonProjectRole    = "known gap: the ProjectRole Read of the Terraform provider returns an error instead of removing the resource when the role is not found, so a new ProjectRole is never created"
+)
+
+// The features of a paid Infisical plan that test objects need. The free plan
+// has no groups, secret approval policies or project templates, and allows
+// three environments per project, which a new project already has.
+const (
+	paidGroups           = "groups"
+	paidEnvironmentLimit = "more than three environments per project"
+	paidSecretApproval   = "secret approval policies"
+	paidProjectTemplates = "project templates"
 )
 
 func updateOf(set, check, want string) *update {
@@ -84,11 +99,11 @@ var objects = []object{
 		file: "identity-kubernetes", name: "identity-kubernetes", shortGroup: identityGroup, kind: "Identity", parent: true,
 	},
 	{
-		file: "group", name: "group", shortGroup: groupGroup, kind: "Group", parent: true,
+		file: "group", name: "group", shortGroup: groupGroup, kind: "Group", parent: true, paidPlan: paidGroups,
 		update: updateOf(`{"name":"__PREFIX__-__RUN_ID__-updated"}`, "status.atProvider.name", `"__PREFIX__-__RUN_ID__-updated"`),
 	},
 	{
-		file: "projectenvironment", name: "environment", shortGroup: projectGroup, kind: "ProjectEnvironment",
+		file: "projectenvironment", name: "environment", shortGroup: projectGroup, kind: "ProjectEnvironment", paidPlan: paidEnvironmentLimit,
 		update: updateOf(`{"name":"e2e-updated"}`, "status.atProvider.name", `"e2e-updated"`),
 	},
 	{
@@ -112,7 +127,7 @@ var objects = []object{
 		update: updateOf(`{"roles":[{"roleSlug":"member"}]}`, "status.atProvider.roles", `[{"roleSlug":"member"}]`),
 	},
 	{
-		file: "projectgroup", name: "project-group", shortGroup: projectGroup, kind: "ProjectGroup",
+		file: "projectgroup", name: "project-group", shortGroup: projectGroup, kind: "ProjectGroup", paidPlan: paidGroups,
 		update: updateOf(`{"roles":[{"roleSlug":"member"}]}`, "status.atProvider.roles", `[{"roleSlug":"member"}]`),
 	},
 	{
@@ -125,11 +140,11 @@ var objects = []object{
 		update: updateOf(`{"enforcementLevel":"hard"}`, "status.atProvider.enforcementLevel", `"hard"`),
 	},
 	{
-		file: "secretapprovalpolicy", name: "secret-approval-policy", shortGroup: projectGroup, kind: "SecretApprovalPolicy",
+		file: "secretapprovalpolicy", name: "secret-approval-policy", shortGroup: projectGroup, kind: "SecretApprovalPolicy", paidPlan: paidSecretApproval,
 		update: updateOf(`{"enforcementLevel":"hard"}`, "status.atProvider.enforcementLevel", `"hard"`),
 	},
 	{
-		file: "projecttemplate", name: "project-template", shortGroup: projectGroup, kind: "ProjectTemplate",
+		file: "projecttemplate", name: "project-template", shortGroup: projectGroup, kind: "ProjectTemplate", paidPlan: paidProjectTemplates,
 		update: updateOf(`{"description":"updated by e2e"}`, "status.atProvider.description", `"updated by e2e"`),
 	},
 	{
@@ -169,6 +184,21 @@ func withoutObject(all []object, file string) []object {
 		}
 	}
 	return kept
+}
+
+// withoutPaidPlan returns the test objects that work on the free Infisical
+// plan, and the test names of the objects that it leaves out.
+func withoutPaidPlan(all []object) ([]object, []string) {
+	kept := make([]object, 0, len(all))
+	var skippedNames []string
+	for _, o := range all {
+		if o.paidPlan == "" {
+			kept = append(kept, o)
+			continue
+		}
+		skippedNames = append(skippedNames, fmt.Sprintf("%s (%s)", o.testName(), o.paidPlan))
+	}
+	return kept, skippedNames
 }
 
 // objectByFile returns the test object of the fixture file.
